@@ -1,0 +1,234 @@
+/* Brand Variables */
+:root {
+  --color-primary: #0A1B3F; /* Deep Navy */
+  --color-accent: #E6007E; /* Synolia Pink */
+  --color-accent-hover: #C7006D;
+  --color-bg-light: #F5F5F8; /* Light Blue Gray */
+  --color-text-body: #666A73; /* Medium Gray */
+  --color-border: #DFE1E7;
+  --color-white: #FFFFFF;
+  --color-footer-bg: #0A1B3F;
+  
+  --font-base: 'Poppins', sans-serif;
+  
+  --max-width: 1180px;
+  --gutter: 24px;
+  --radius-card: 20px;
+  --radius-btn: 999px;
+  
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  color: var(--color-text-body);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 48px; letter-spacing: 0.02em; }
+h2 { font-size: 36px; letter-spacing: 0.01em; }
+h3 { font-size: 24px; font-weight: 600; }
+
+a { text-decoration: none; transition: all 0.2s ease; }
+ul { list-style: none; }
+
+/* Utilities */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  width: 100%;
+}
+
+.text-center { text-align: center; }
+.text-primary { color: var(--color-primary); }
+.text-accent { color: var(--color-accent); }
+
+.highlight { color: var(--color-accent); }
+
+.section {
+  padding: 80px 0;
+}
+
+.bg-white { background-color: var(--color-white); }
+.bg-light { background-color: var(--color-bg-light); }
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+}
+
+.col-12 { grid-column: span 12; }
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+.col-7 { grid-column: span 7; }
+.col-5 { grid-column: span 5; }
+
+/* Components */
+.btn {
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  padding: 10px 30px;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(230, 0, 126, 0.05);
+}
+
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 32px;
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--color-border);
+}
+
+/* Header */
+header {
+  background: var(--color-white);
+  padding: 20px 0;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+}
+
+/* Hero */
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-image {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle);
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Features / Checklist */
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.checklist-icon {
+  color: var(--color-accent);
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+/* Logos */
+.logo-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  opacity: 0.7;
+}
+
+.logo-strip img {
+  height: 50px;
+  filter: grayscale(100%);
+  transition: filter 0.3s;
+}
+
+.logo-strip img:hover {
+  filter: grayscale(0%);
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-footer-bg);
+  color: var(--color-white);
+  padding: 60px 0 30px;
+}
+
+footer a {
+  color: rgba(255,255,255,0.7);
+}
+
+footer a:hover {
+  color: var(--color-white);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  h1 { font-size: 36px; }
+  h2 { font-size: 28px; }
+  
+  .hero {
+    padding-top: 40px;
+    text-align: center;
+  }
+  
+  .header-inner {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

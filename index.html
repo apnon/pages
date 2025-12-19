@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synolia US | Landing Pages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        h1 {
+            color: #1a1a2e;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .campaigns {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+        }
+
+        .campaign-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            width: 350px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .campaign-card h2 {
+            color: #1a1a2e;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .campaign-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .campaign-card .btn {
+            display: inline-block;
+            background: #7C3AED;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .campaign-card .btn:hover {
+            background: #6D28D9;
+        }
+
+        footer {
+            margin-top: 60px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="campaign1/assets/synolia_logo.svg" alt="Synolia">
+    </div>
+
+    <h1>Select a Landing Page</h1>
+
+    <div class="campaigns">
+        <a href="campaign1/" class="campaign-card">
+            <h2>Campaign 1</h2>
+            <p>B2B Ecommerce Project Starter Kit - A practical framework to define, align, and de-risk your future B2B ecommerce platform.</p>
+            <span class="btn">View Page</span>
+        </a>
+
+        <a href="campaign2/" class="campaign-card">
+            <h2>Campaign 2</h2>
+            <p>Free US Market Entry Strategy Consultation - 30-minute consultation with our US business development lead.</p>
+            <span class="btn">View Page</span>
+        </a>
+    </div>
+
+    <footer>
+        &copy; 2024 Synolia. All rights reserved.
+    </footer>
+</body>
+</html>
