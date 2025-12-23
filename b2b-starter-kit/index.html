@@ -78,8 +78,27 @@
         <div class="container">
             <div class="grid">
                 <div class="col-6">
-                    <div class="hero-image" style="box-shadow: var(--shadow-subtle); border: 1px solid var(--color-border);">
-                        <img src="assets/kit_preview.png" alt="Starter Kit Preview">
+                    <div class="slideshow-container" style="max-width: 320px; margin: 0 auto;">
+                        <div class="slideshow" style="position: relative; box-shadow: var(--shadow-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden;">
+                            <img src="assets/slides/page-02.webp" class="slide active" alt="Starter Kit Page 2">
+                            <img src="assets/slides/page-03.webp" class="slide" alt="Starter Kit Page 3">
+                            <img src="assets/slides/page-04.webp" class="slide" alt="Starter Kit Page 4">
+                            <img src="assets/slides/page-05.webp" class="slide" alt="Starter Kit Page 5">
+                            <img src="assets/slides/page-06.webp" class="slide" alt="Starter Kit Page 6">
+                            <img src="assets/slides/page-07.webp" class="slide" alt="Starter Kit Page 7">
+                            <img src="assets/slides/page-08.webp" class="slide" alt="Starter Kit Page 8">
+                            <img src="assets/slides/page-09.webp" class="slide" alt="Starter Kit Page 9">
+                            <img src="assets/slides/page-10.webp" class="slide" alt="Starter Kit Page 10">
+                            <img src="assets/slides/page-11.webp" class="slide" alt="Starter Kit Page 11">
+                            <img src="assets/slides/page-12.webp" class="slide" alt="Starter Kit Page 12">
+                            <img src="assets/slides/page-13.webp" class="slide" alt="Starter Kit Page 13">
+                            <img src="assets/slides/page-14.webp" class="slide" alt="Starter Kit Page 14">
+                            <img src="assets/slides/page-15.webp" class="slide" alt="Starter Kit Page 15">
+                            <img src="assets/slides/page-16.webp" class="slide" alt="Starter Kit Page 16">
+                            <img src="assets/slides/page-17.webp" class="slide" alt="Starter Kit Page 17">
+                            <img src="assets/slides/page-18.webp" class="slide" alt="Starter Kit Page 18">
+                            <img src="assets/slides/page-19.webp" class="slide" alt="Starter Kit Page 19">
+                        </div>
                     </div>
                     <p style="margin-top: 16px; font-size: 14px; color: var(--color-text-body); text-align: center;">
                         <i class="fas fa-file-pdf" style="margin-right: 6px; color: var(--color-accent);"></i>
@@ -342,5 +361,28 @@
         </div>
     </footer>
 
+    <script>
+    // Auto-advancing slideshow
+    (function() {
+        const slides = document.querySelectorAll('.slideshow .slide');
+        const counter = document.querySelector('.current-slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        const intervalTime = 2500; // 2.5 seconds per slide
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            counter.textContent = index + 1;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, intervalTime);
+    })();
+    </script>
 </body>
 </html>
