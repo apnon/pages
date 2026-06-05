@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery concepts | Synolia demo store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style-dark.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .concept-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--magenta); margin-bottom: 10px; }
+    .concept-sec { padding: 70px 0; border-bottom: 1px solid var(--border); }
+    .concept-sec h2 { font-size: 30px; margin-bottom: 8px; }
+    .concept-sec .desc { color: var(--text-soft); max-width: 640px; margin-bottom: 40px; }
+
+    /* shared browser frame */
+    .frame { background: #0A1430; border: 1px solid var(--border-strong); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-panel); }
+    .frame .bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #0E1A3C; border-bottom: 1px solid var(--border); }
+    .frame .bar span { width: 10px; height: 10px; border-radius: 50%; background: #2a3560; }
+    .frame .bar .url { margin-left: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); background: #0A1430; border: 1px solid var(--border); border-radius: 5px; padding: 3px 12px; flex: 1; }
+    .frame .screen { aspect-ratio: 16 / 10; overflow: hidden; background: #0A1430; }
+    .frame .screen img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+
+    /* ---------- CONCEPT A: single hero browser, cross-fade ---------- */
+    .conceptA { display: grid; grid-template-columns: 1fr 1.25fr; gap: 44px; align-items: center; }
+    .stage { position: relative; }
+    .stage .frame .screen { position: relative; }
+    .stage .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+    .stage .slide.on { opacity: 1; }
+    .stage .slide img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .cap { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 14px; color: var(--text-soft); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; }
+    .cap .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--magenta); }
+    .dots { display: flex; gap: 7px; margin-top: 16px; }
+    .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); transition: background .3s, width .3s; }
+    .dots i.on { background: var(--magenta); width: 22px; border-radius: 4px; }
+
+    /* ---------- CONCEPT B: auto-scrolling showcase wall ---------- */
+    .marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .track { display: flex; gap: 22px; width: max-content; animation: scrollx 46s linear infinite; }
+    .marquee:hover .track { animation-play-state: paused; }
+    .track .card { width: 420px; flex-shrink: 0; }
+    @keyframes scrollx { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- CONCEPT C: perspective triptych ---------- */
+    .triptych { position: relative; height: 520px; perspective: 1800px; display: flex; align-items: center; justify-content: center; }
+    .triptych .frame { position: absolute; width: 560px; transition: all .8s cubic-bezier(.2,.7,.2,1); }
+    .triptych .frame.center { z-index: 3; transform: translateX(0) scale(1); }
+    .triptych .frame.left { z-index: 1; transform: translateX(-340px) rotateY(26deg) scale(.82); opacity: .72; }
+    .triptych .frame.right { z-index: 1; transform: translateX(340px) rotateY(-26deg) scale(.82); opacity: .72; }
+
+    @media (max-width: 900px) {
+      .conceptA { grid-template-columns: 1fr; }
+      .triptych .frame { width: 88vw; }
+      .triptych .frame.left, .triptych .frame.right { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="index-dark.html" class="logo"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);">gallery concepts — internal review</span>
+    </div>
+  </header>
+
+  <section class="section" style="padding:54px 0 20px;">
+    <div class="container">
+      <h1 style="font-size:42px;">Store gallery — 3 presentation concepts</h1>
+      <p class="lead mt-16" style="max-width:680px;">All six AI-generated B2B store screenshots, shown three different ways. Each auto-rotates. Pick the direction and I'll wire it into the dark landing hero, replacing the SVG placeholder.</p>
+    </div>
+  </section>
+
+  <!-- CONCEPT A -->
+  <section class="concept-sec">
+    <div class="container">
+      <div class="concept-label">// Concept A</div>
+      <h2>One live store, morphing</h2>
+      <p class="desc">A single browser in the hero. The screenshots cross-fade through different industries, so it reads as <em>your</em> store coming to life. Focused, premium, calm. Best paired beside the headline.</p>
+      <div class="conceptA">
+        <div>
+          <div class="cap"><span class="dot"></span><span id="capText">A manufacturer's store</span></div>
+          <div class="dots" id="dotsA"></div>
+          <p style="margin-top:22px;color:var(--text-dim);font-size:14px;max-width:340px;">Same browser frame every time → perfectly consistent format and zoom, even if a source image varies.</p>
+        </div>
+        <div class="stage">
+          <div class="frame">
+            <div class="bar"><span></span><span></span><span></span><div class="url">demo.yourcompany.com</div></div>
+            <div class="screen" id="stageScreen"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPT B -->
+  <section class="concept-sec">
+    <div class="container">
+      <div class="concept-label">// Concept B</div>
+      <h2>The showcase wall</h2>
+      <p class="desc">A continuous auto-scrolling band of stores. Conveys range and volume — "we've built these across every B2B vertical." Energetic, great as a full-width strip under the hero. Hover to pause.</p>
+    </div>
+    <div class="marquee">
+      <div class="track" id="trackB"></div>
+    </div>
+  </section>
+
+  <!-- CONCEPT C -->
+  <section class="concept-sec" style="border-bottom:none;">
+    <div class="container">
+      <div class="concept-label">// Concept C</div>
+      <h2>The build, in perspective</h2>
+      <p class="desc">Three screens in depth — homepage, product page, account dashboard — that auto-cycle which sits front. Sells the idea of a <em>complete</em> build, not one screen. Editorial and high-end.</p>
+      <div class="triptych" id="triptych">
+        <div class="frame left"><div class="bar"><span></span><span></span><span></span><div class="url">demo.yourcompany.com</div></div><div class="screen"><img alt=""></div></div>
+        <div class="frame center"><div class="bar"><span></span><span></span><span></span><div class="url">demo.yourcompany.com</div></div><div class="screen"><img alt=""></div></div>
+        <div class="frame right"><div class="bar"><span></span><span></span><span></span><div class="url">demo.yourcompany.com</div></div><div class="screen"><img alt=""></div></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    var IMAGES = [
+      { src: 'assets/gallery/01-forgeline-home.png', label: "A manufacturer's store" },
+      { src: 'assets/gallery/02-voltrex-home.png', label: "A components distributor" },
+      { src: 'assets/gallery/05-nordic-home.png', label: "A building-materials trader" },
+      { src: 'assets/gallery/04-packwell-home.png', label: "A packaging supplier" },
+      { src: 'assets/gallery/03-pump-product.png', label: "A product page, with tier pricing" },
+      { src: 'assets/gallery/06-quickorder-dashboard.png', label: "An account & quick-order pad" }
+    ];
+
+    /* Concept A — cross-fade */
+    var stage = document.getElementById('stageScreen');
+    var dotsA = document.getElementById('dotsA');
+    var capText = document.getElementById('capText');
+    IMAGES.forEach(function (im, i) {
+      var s = document.createElement('div'); s.className = 'slide' + (i === 0 ? ' on' : '');
+      s.innerHTML = '<img src="' + im.src + '" alt="">'; stage.appendChild(s);
+      var d = document.createElement('i'); if (i === 0) d.className = 'on'; dotsA.appendChild(d);
+    });
+    var slides = stage.querySelectorAll('.slide');
+    var dots = dotsA.querySelectorAll('i');
+    var a = 0;
+    setInterval(function () {
+      slides[a].classList.remove('on'); dots[a].classList.remove('on');
+      a = (a + 1) % IMAGES.length;
+      slides[a].classList.add('on'); dots[a].classList.add('on');
+      capText.textContent = IMAGES[a].label;
+    }, 3200);
+
+    /* Concept B — marquee (duplicate the set for a seamless loop) */
+    var track = document.getElementById('trackB');
+    function card(im) {
+      return '<div class="card"><div class="frame"><div class="bar"><span></span><span></span><span></span>' +
+        '<div class="url">demo.yourcompany.com</div></div><div class="screen"><img src="' + im.src + '" alt=""></div></div></div>';
+    }
+    track.innerHTML = IMAGES.map(card).join('') + IMAGES.map(card).join('');
+
+    /* Concept C — rotate the trio */
+    var tri = document.getElementById('triptych');
+    var imgs = tri.querySelectorAll('.screen img');
+    var order = [0, 4, 5]; // left(center img index), center, right -> we map positions
+    function paintTri(centerIdx) {
+      // center shows a homepage; sides show product + dashboard, rotating through the set
+      var left = tri.querySelector('.frame.left .screen img');
+      var center = tri.querySelector('.frame.center .screen img');
+      var right = tri.querySelector('.frame.right .screen img');
+      center.src = IMAGES[centerIdx % IMAGES.length].src;
+      left.src = IMAGES[(centerIdx + 4) % IMAGES.length].src;
+      right.src = IMAGES[(centerIdx + 5) % IMAGES.length].src;
+    }
+    var c = 0; paintTri(0);
+    setInterval(function () { c = (c + 1) % IMAGES.length; paintTri(c); }, 3600);
+  </script>
+</body>
+
+</html>

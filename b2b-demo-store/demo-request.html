@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5X7TNR8L');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build my B2B demo store | Synolia</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style-dark.css" />
+  <link rel="stylesheet" href="wizard-dark.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- HubSpot Meetings embed (loads the booking widget). -->
+  <script src="https://static.hsappstatic.net/MeetingsEmbedCode/static-1/embed/index.js"></script>
+  <!-- Public backend config (edit config.js to go live) -->
+  <script src="config.js"></script>
+</head>
+
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5X7TNR8L" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+
+  <header>
+    <div class="container header-inner">
+      <a href="index-dark.html" class="logo"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+      <a href="index-dark.html" style="font-weight:600;font-size:14px;"><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back to overview</a>
+    </div>
+  </header>
+
+  <div class="wizard-wrap">
+    <div class="wizard">
+
+      <!-- Progress -->
+      <div class="stepper" id="stepper"></div>
+      <div class="step-meta">
+        <span class="count" id="stepCount">Step 1 of 8</span>
+        <span class="save" id="saveState"><i class="fas fa-cloud"></i> Progress saved automatically</span>
+      </div>
+
+      <div class="step-body">
+
+        <!-- STEP 1 — Book the demo (HubSpot) -->
+        <section class="step active" data-step="1">
+          <h2>First, pick your live demo slot</h2>
+          <p class="hint">Choose a date at least one week out — that's the time our team needs to build your store
+            properly. This is the live walkthrough with a Synolia expert.</p>
+
+          <div class="hs-embed" id="hsEmbed">
+            <div class="cal-ico"><i class="far fa-calendar-check"></i></div>
+            <div>
+              <div class="big">HubSpot Meetings widget mounts here</div>
+              <p class="small" style="font-size:13px;margin-top:6px;max-width:380px;">
+                In production this is the live calendar. When a visitor confirms a slot, HubSpot fires
+                <code>meetingBookSucceeded</code> and we advance automatically.</p>
+            </div>
+            <button class="btn btn-ghost" id="simulateBook" type="button"><i class="fas fa-play"></i> Simulate a booking</button>
+          </div>
+          <!-- Live embed (commented for the mockup). Uncomment + set data-src to go live:
+          <div class="meetings-iframe-container" data-src="https://meetings.hubspot.com/alexandre-perrachon?embed=true"></div>
+          -->
+
+          <div class="booked-banner" id="bookedBanner">
+            <i class="fas fa-check-circle"></i>
+            <span>Slot reserved for <strong id="bookedSlot">Mon, June 15 · 3:00 PM CET</strong>. Now let's prepare your demo.</span>
+          </div>
+        </section>
+
+        <!-- STEP 2 — Company -->
+        <section class="step" data-step="2">
+          <h2>Tell us who you are</h2>
+          <p class="hint">The basics, so we know whose store we're building.</p>
+
+          <div class="field" data-validate="text">
+            <label>Company name <span class="req">*</span></label>
+            <input type="text" name="company" placeholder="Acme Manufacturing Inc." />
+            <div class="err">Please enter your company name.</div>
+          </div>
+          <div class="row-2">
+            <div class="field" data-validate="text">
+              <label>Your name <span class="req">*</span></label>
+              <input type="text" name="fullname" placeholder="Jane Doe" />
+              <div class="err">Please enter your name.</div>
+            </div>
+            <div class="field" data-validate="text">
+              <label>Your role / title <span class="req">*</span></label>
+              <input type="text" name="role" placeholder="VP Ecommerce" />
+              <div class="err">Please enter your role.</div>
+            </div>
+          </div>
+          <div class="field" data-validate="url">
+            <label>Current website <span class="req">*</span> <span class="sub">— your best catalog source</span></label>
+            <input type="text" name="website" placeholder="www.yourcompany.com" />
+            <div class="err">Please enter a valid website (e.g. www.yourcompany.com).</div>
+          </div>
+          <div class="field">
+            <label>Do you already sell online today?</label>
+            <div class="choices cols-2" data-single="sells_online">
+              <div class="choice radio" data-value="no"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Not yet</div></div></div>
+              <div class="choice radio" data-value="portal"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">We have a portal / site</div></div></div>
+              <div class="choice radio" data-value="email_excel"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Email / phone / Excel orders</div></div></div>
+              <div class="choice radio" data-value="replatform"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Replacing a legacy system</div></div></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Anything we should know about your current setup? <span class="sub">(optional)</span></label>
+            <textarea name="current_notes" placeholder="e.g. We have a customer portal but no real catalog or self-service ordering."></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 3 — Catalog & data -->
+        <section class="step" data-step="3">
+          <h2>Your catalog &amp; data</h2>
+          <p class="hint">Give us the raw material. Anything you have works — PDF, Excel, CSV, images, or just links.
+            We'll extract what we can, as best we can.</p>
+
+          <div class="field">
+            <label>Upload files <span class="sub">— catalog, price list structure, brand assets…</span></label>
+            <div class="dropzone" id="dropzone">
+              <i class="fas fa-cloud-arrow-up"></i>
+              <div class="big">Drop files here or click to browse</div>
+              <div class="small">PDF, XLSX, CSV, ZIP, PNG/JPG · up to 50 MB each</div>
+              <input type="file" id="fileInput" multiple hidden />
+            </div>
+            <div class="filelist" id="fileList"></div>
+          </div>
+
+          <div class="field">
+            <label>…or paste links <span class="sub">(catalog page, product feed, Dropbox/Drive…)</span></label>
+            <textarea name="data_links" placeholder="https://www.yourcompany.com/catalog&#10;https://drive.google.com/..."></textarea>
+          </div>
+
+          <div class="field" data-validate="single">
+            <label>Roughly how many products (SKUs)? <span class="req">*</span></label>
+            <div class="choices cols-2" data-single="sku_band">
+              <div class="choice radio" data-value="<100"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Under 100</div></div></div>
+              <div class="choice radio" data-value="100-10k"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">100 – 10,000</div></div></div>
+              <div class="choice radio" data-value="10k-100k"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">10,000 – 100,000</div></div></div>
+              <div class="choice radio" data-value="100k+"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">More than 100,000</div></div></div>
+            </div>
+            <div class="err">Please pick a range.</div>
+          </div>
+        </section>
+
+        <!-- STEP 4 — Pricing -->
+        <section class="step" data-step="4">
+          <h2>How does your pricing work?</h2>
+          <p class="hint">So the demo behaves like your business. <strong>We never ask for your actual prices</strong> —
+            just the model. Pick all that apply.</p>
+
+          <div class="field" data-validate="multi">
+            <div class="choices" data-multi="pricing_models">
+              <div class="choice" data-value="list"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">List / catalog price</div><div class="c-desc">Same public price for everyone.</div></div></div>
+              <div class="choice" data-value="customer_lists"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Customer-specific price lists</div><div class="c-desc">Negotiated prices per account.</div></div></div>
+              <div class="choice" data-value="group"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Customer group / segment pricing</div><div class="c-desc">By tier, channel or category.</div></div></div>
+              <div class="choice" data-value="volume"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Volume / quantity-break pricing</div><div class="c-desc">Price drops with quantity.</div></div></div>
+              <div class="choice" data-value="contract"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Contract pricing</div><div class="c-desc">Agreed prices for a period.</div></div></div>
+              <div class="choice" data-value="discount"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Discount off list</div><div class="c-desc">A % per customer or group.</div></div></div>
+              <div class="choice" data-value="quote"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Quote / RFQ — price on request</div><div class="c-desc">No public price; sales quotes it.</div></div></div>
+              <div class="choice" data-value="erp"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">ERP-driven dynamic pricing</div><div class="c-desc">Prices come live from your ERP.</div></div></div>
+            </div>
+            <div class="err">Pick at least one pricing model.</div>
+          </div>
+          <div class="field">
+            <label>Anything specific about your pricing we should reproduce? <span class="sub">(optional)</span></label>
+            <textarea name="pricing_notes" placeholder="e.g. Prices depend on customer + region + contract, and reps can override within a margin floor."></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 5 — Customers -->
+        <section class="step" data-step="5">
+          <h2>Who are your customers?</h2>
+          <p class="hint">We'll set up login scenarios for each type so you see how they'd buy. Pick all that apply.</p>
+
+          <div class="field" data-validate="multi">
+            <div class="choices cols-2" data-multi="customer_types" id="customerTypes">
+              <div class="choice" data-value="institutional"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Institutional / public sector</div></div></div>
+              <div class="choice" data-value="smb"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">SMBs</div></div></div>
+              <div class="choice" data-value="large"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Large corporations</div></div></div>
+              <div class="choice" data-value="distributors"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Distributors / resellers</div></div></div>
+            </div>
+            <div class="err">Pick at least one customer type.</div>
+
+            <!-- Repartition appears only if 2+ types selected -->
+            <div class="repartition" id="repartition">
+              <p style="font-size:14px;font-weight:600;color:var(--color-text-strong);margin-bottom:14px;">Roughly how do they split? Drag to approximate.</p>
+              <div id="sliderRows"></div>
+              <p class="total" id="repTotal">Total: 0%</p>
+            </div>
+          </div>
+
+          <div class="field" data-validate="single">
+            <label>Roughly how many B2B customers do you serve? <span class="req">*</span></label>
+            <div class="choices cols-2" data-single="customer_count">
+              <div class="choice radio" data-value="<100"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Less than 100</div></div></div>
+              <div class="choice radio" data-value="100-1k"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">100 – 1,000</div></div></div>
+              <div class="choice radio" data-value="1k-10k"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">1,000 – 10,000</div></div></div>
+              <div class="choice radio" data-value="10k+"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">More than 10,000</div></div></div>
+            </div>
+            <div class="err">Please pick a range.</div>
+          </div>
+        </section>
+
+        <!-- STEP 6 — Why now -->
+        <section class="step" data-step="6">
+          <h2>Why are you exploring this now?</h2>
+          <p class="hint">What you're trying to fix shapes what we highlight in the demo. Pick any that ring true.</p>
+
+          <div class="field">
+            <div class="choices" data-multi="pains">
+              <div class="choice" data-value="manual_orders"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Order entry is manual and error-prone</div></div></div>
+              <div class="choice" data-value="reps_overloaded"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Sales/support team buried in repetitive requests</div></div></div>
+              <div class="choice" data-value="no_selfservice"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Customers can't check price / stock / order status themselves</div></div></div>
+              <div class="choice" data-value="legacy"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Our current portal / system is outdated</div></div></div>
+              <div class="choice" data-value="growth"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">We want to grow online / enter new markets</div></div></div>
+              <div class="choice" data-value="competitive"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Competitors are ahead of us digitally</div></div></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>In your own words, what would make this project a win? <span class="sub">(optional)</span></label>
+            <textarea name="why_notes" placeholder="e.g. Cut the 200+ phone/email orders a week our team keys in by hand."></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 7 — Team & systems -->
+        <section class="step" data-step="7">
+          <h2>Your team &amp; systems</h2>
+          <p class="hint">So we can show how the platform fits around the people and tools you already have.</p>
+
+          <div class="field">
+            <label>Do you have a sales team taking / managing orders?</label>
+            <div class="choices cols-2" data-single="has_sales">
+              <div class="choice radio" data-value="yes"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Yes</div></div></div>
+              <div class="choice radio" data-value="no"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">No</div></div></div>
+            </div>
+          </div>
+          <div class="row-2" id="salesDetail" style="display:none;">
+            <div class="field">
+              <label>How many sales reps, roughly?</label>
+              <input type="text" name="rep_count" placeholder="e.g. 12" />
+            </div>
+            <div class="field">
+              <label>What tools do they use today?</label>
+              <input type="text" name="rep_tools" placeholder="e.g. Excel, ERP, phone, email" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>What systems would this need to connect to? <span class="sub">Pick what applies and name it.</span></label>
+            <div class="row-2">
+              <div>
+                <label style="font-size:13px;font-weight:500;">ERP</label>
+                <select name="erp" class="has-other">
+                  <option value="">None / not sure</option>
+                  <option>SAP</option><option>Microsoft Dynamics</option><option>Oracle / NetSuite</option>
+                  <option>Sage</option><option>Infor</option><option>Epicor</option><option>Odoo</option><option>Other</option>
+                </select>
+                <input type="text" name="erp_other" class="other-input" placeholder="Which ERP?" style="display:none;margin-top:10px;" />
+              </div>
+              <div>
+                <label style="font-size:13px;font-weight:500;">PIM</label>
+                <select name="pim" class="has-other">
+                  <option value="">None / not sure</option>
+                  <option>Akeneo</option><option>inRiver</option><option>Salsify</option><option>Other</option>
+                </select>
+                <input type="text" name="pim_other" class="other-input" placeholder="Which PIM?" style="display:none;margin-top:10px;" />
+              </div>
+            </div>
+            <div class="row-2" style="margin-top:14px;">
+              <div>
+                <label style="font-size:13px;font-weight:500;">CRM</label>
+                <select name="crm" class="has-other">
+                  <option value="">None / not sure</option>
+                  <option>Salesforce</option><option>HubSpot</option><option>Microsoft Dynamics</option><option>Other</option>
+                </select>
+                <input type="text" name="crm_other" class="other-input" placeholder="Which CRM?" style="display:none;margin-top:10px;" />
+              </div>
+              <div>
+                <label style="font-size:13px;font-weight:500;">Other systems</label>
+                <input type="text" name="other_systems" placeholder="OMS, WMS, punchout…" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 8 — Contact & consent -->
+        <section class="step" data-step="8">
+          <h2>How should we reach you?</h2>
+          <p class="hint">Only if we have a clarifying question while building. We'll always email your demo details either way.</p>
+
+          <div class="field" data-validate="email">
+            <label>Work email <span class="req">*</span></label>
+            <input type="email" name="email" placeholder="jane@yourcompany.com" />
+            <div class="err">Please enter a valid work email.</div>
+          </div>
+
+          <div class="field">
+            <label>Preferred contact method</label>
+            <div class="choices cols-2" data-single="contact_pref">
+              <div class="choice radio" data-value="email"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Email is fine</div></div></div>
+              <div class="choice radio" data-value="phone"><span class="box"><i class="fas fa-check"></i></span><div><div class="c-title">Call me</div></div></div>
+            </div>
+          </div>
+          <div class="field" id="phoneField" style="display:none;" data-validate="phone-cond">
+            <label>Phone number <span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="+1 555 010 0000" />
+            <div class="err">Please enter a phone number, or switch to email.</div>
+          </div>
+
+          <div class="field" data-validate="consent">
+            <div class="consent">
+              <input type="checkbox" id="consent" />
+              <label for="consent">I agree that Synolia may use the information and files I provide solely to build and
+                present my demo. I understand it will be stored securely, never shared, and deleted within 30 days. <span class="req">*</span></label>
+            </div>
+            <div class="err" style="margin-top:8px;">Please accept so we can build your demo.</div>
+          </div>
+        </section>
+
+        <!-- CONFIRMATION -->
+        <section class="step" data-step="9">
+          <div class="confirm">
+            <div class="big-check"><i class="fas fa-check"></i></div>
+            <h2>You're all set. We're on it.</h2>
+            <p class="lead">Our team is now building your personalized B2B demo store. Here's what happens next.</p>
+
+            <div class="summary">
+              <div class="row"><i class="far fa-calendar-check"></i><div><strong>Your live demo:</strong> <span id="confSlot">Mon, June 15 · 3:00 PM CET</span></div></div>
+              <div class="row"><i class="fas fa-hourglass-half"></i><div><strong>Please finalize any extra data by:</strong> <span id="confDue">Wed, June 10</span> (3 business days before).</div></div>
+              <div class="row"><i class="fas fa-envelope"></i><div>A confirmation + a link to add or edit your details is on its way to <span id="confEmail">your inbox</span>.</div></div>
+              <div class="row"><i class="fas fa-video"></i><div>Afterwards you keep the <strong>walkthrough recording</strong>, a <strong>screenshot pack</strong> and <strong>build documentation</strong> to share and iterate on internally.</div></div>
+            </div>
+
+            <p style="font-size:14px;">Need to change something? Just reply to the confirmation email.</p>
+            <div class="trust-row"><i class="fas fa-lock"></i> Your data is used only for your demo and deleted after 30 days.</div>
+            <a href="index-dark.html" class="btn btn-ghost" style="margin-top:26px;">Back to start</a>
+          </div>
+        </section>
+
+      </div><!-- /step-body -->
+
+      <!-- Footer nav -->
+      <div class="wizard-foot" id="wizFoot">
+        <button class="back" id="btnBack" disabled><i class="fas fa-arrow-left" style="font-size:12px;"></i> Back</button>
+        <button class="btn btn-primary" id="btnNext" disabled>Continue <i class="fas fa-arrow-right"></i></button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       Synolia demo-store wizard — front-end logic (mockup)
+       Network calls (R2 upload, save state, HubSpot webhook) are
+       stubbed with clearly marked TODOs.
+       ============================================================ */
+    var TOTAL_STEPS = 8;            // step 9 = confirmation (not counted)
+    var current = 1;
+    var data = { files: [] };       // collected answers
+    var dl = (window.dataLayer = window.dataLayer || []);
+
+    /* ---------- backend wiring ---------- */
+    var CFG = window.DEMO_CONFIG || {};
+    var LIVE = !!CFG.apiBase && CFG.apiBase.indexOf('YOUR_') === -1;
+    var sessionToken = (function () { try { return localStorage.getItem('demo_token'); } catch (e) { return null; } })();
+    function setToken(t) { sessionToken = t; try { localStorage.setItem('demo_token', t); } catch (e) {} }
+    function clearToken() { try { localStorage.removeItem('demo_token'); } catch (e) {} }
+    async function api(fn, body) {
+      var r = await fetch(CFG.apiBase + '/' + fn, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      var j = await r.json().catch(function () { return {}; });
+      if (!r.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + r.status));
+      return j;
+    }
+
+    var stepper = document.getElementById('stepper');
+    var stepCount = document.getElementById('stepCount');
+    var saveState = document.getElementById('saveState');
+    var btnNext = document.getElementById('btnNext');
+    var btnBack = document.getElementById('btnBack');
+    var wizFoot = document.getElementById('wizFoot');
+
+    // Build progress segments
+    for (var i = 0; i < TOTAL_STEPS; i++) {
+      var seg = document.createElement('div'); seg.className = 'seg'; stepper.appendChild(seg);
+    }
+    var segs = stepper.querySelectorAll('.seg');
+
+    function showStep(n) {
+      document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+      var el = document.querySelector('.step[data-step="' + n + '"]');
+      el.classList.add('active');
+      current = n;
+
+      // Confirmation screen: hide nav
+      if (n === 9) { wizFoot.style.display = 'none'; stepper.parentElement.style.opacity = 1; }
+      else { wizFoot.style.display = 'flex'; }
+
+      // progress
+      segs.forEach(function (s, idx) {
+        s.classList.remove('done', 'active');
+        if (idx < n - 1) s.classList.add('done');
+        else if (idx === n - 1) s.classList.add('active');
+      });
+      if (n <= TOTAL_STEPS) stepCount.textContent = 'Step ' + n + ' of ' + TOTAL_STEPS;
+
+      btnBack.disabled = (n === 1);
+      // Button label per step
+      if (n === TOTAL_STEPS) btnNext.innerHTML = 'Submit &amp; build my demo <i class="fas fa-check"></i>';
+      else if (n < 9) btnNext.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+      // Step 1 advances only via booking; steps 2-8 stay clickable so
+      // validation errors can surface on click (no silent dead button).
+      refreshNextButton();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------- STEP 1 : HubSpot booking ---------- */
+    function onBooked(slotLabel, startIso) {
+      data.booking = { slot: slotLabel, start: startIso || null, bookedAt: new Date().toISOString() };
+      document.getElementById('bookedSlot').textContent = slotLabel;
+      document.getElementById('bookedBanner').classList.add('show');
+      document.getElementById('hsEmbed').style.display = 'none';
+      dl.push({ event: 'demo_slot_booked', offer: 'personalized_demo_store' });
+      saveProgress(1);   // persists the booking (and creates the lead row)
+      btnNext.disabled = false;
+      btnNext.textContent = 'Continue to your details';
+    }
+    // Real HubSpot signal:
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.meetingBookSucceeded) {
+        var p = e.data.meetingsPayload || {};
+        var resp = (p.bookingResponse) || {};
+        var label = (resp.postResponse && resp.postResponse.timerange) ? resp.postResponse.timerange : 'your selected slot';
+        var startIso = null;
+        var startMs = (resp.postResponse && (resp.postResponse.startTime || resp.postResponse.start)) || p.startTime;
+        if (startMs) { var dt = new Date(typeof startMs === 'number' ? startMs : Date.parse(startMs)); if (!isNaN(dt.getTime())) startIso = dt.toISOString(); }
+        if (resp.contact && resp.contact.email) { data.email = resp.contact.email; }   // pre-fill from HubSpot
+        onBooked(label, startIso);
+      }
+    });
+    // Mock "Simulate a booking" button (only present when HubSpot isn't wired):
+    var simBtn = document.getElementById('simulateBook');
+    if (simBtn) simBtn.addEventListener('click', function () {
+      var dt = new Date(); dt.setDate(dt.getDate() + 7); dt.setHours(15, 0, 0, 0);
+      var label = dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' · 3:00 PM';
+      onBooked(label, dt.toISOString());
+    });
+    // If a real HubSpot meeting link is configured, mount the live calendar.
+    if (CFG.hubspotMeetingUrl && CFG.hubspotMeetingUrl.indexOf('YOUR_') === -1) {
+      var host = document.getElementById('hsEmbed');
+      host.innerHTML = '<div class="meetings-iframe-container" style="width:100%" data-src="' + CFG.hubspotMeetingUrl + '"></div>';
+      if (window.hbspt && window.hbspt.meetings) { try { window.hbspt.meetings.create(host.firstChild); } catch (e) {} }
+    }
+
+    /* ---------- choice widgets (single + multi) ---------- */
+    document.querySelectorAll('[data-single]').forEach(function (group) {
+      group.addEventListener('click', function (e) {
+        var c = e.target.closest('.choice'); if (!c) return;
+        group.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('selected'); });
+        c.classList.add('selected');
+        data[group.dataset.single] = c.dataset.value;
+        handleConditional(group.dataset.single, c.dataset.value);
+        clearError(group);
+        refreshNextButton();
+      });
+    });
+    document.querySelectorAll('[data-multi]').forEach(function (group) {
+      group.addEventListener('click', function (e) {
+        var c = e.target.closest('.choice'); if (!c) return;
+        c.classList.toggle('selected');
+        var vals = Array.from(group.querySelectorAll('.choice.selected')).map(function (x) { return x.dataset.value; });
+        data[group.dataset.multi] = vals;
+        if (group.id === 'customerTypes') updateRepartition(vals);
+        clearError(group);
+        refreshNextButton();
+      });
+    });
+
+    /* ---------- make choice cards keyboard-accessible (Tab + Enter/Space) ---------- */
+    document.querySelectorAll('.choice').forEach(function (c) {
+      c.setAttribute('tabindex', '0');
+      c.setAttribute('role', c.classList.contains('radio') ? 'radio' : 'checkbox');
+      c.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); c.click(); }
+      });
+    });
+
+    /* ---------- conditional fields ---------- */
+    function handleConditional(key, val) {
+      if (key === 'has_sales') document.getElementById('salesDetail').style.display = (val === 'yes') ? 'grid' : 'none';
+      if (key === 'contact_pref') {
+        document.getElementById('phoneField').style.display = (val === 'phone') ? 'block' : 'none';
+      }
+    }
+
+    /* ---------- repartition sliders ---------- */
+    var REP_LABELS = { institutional: 'Institutional', smb: 'SMBs', large: 'Large corps', distributors: 'Distributors' };
+    function updateRepartition(vals) {
+      var box = document.getElementById('repartition');
+      var rows = document.getElementById('sliderRows');
+      if (vals.length < 2) { box.classList.remove('show'); rows.innerHTML = ''; data.repartition = null; return; }
+      box.classList.add('show');
+      var start = Math.round(100 / vals.length);
+      rows.innerHTML = '';
+      vals.forEach(function (v, idx) {
+        var init = (idx === vals.length - 1) ? (100 - start * (vals.length - 1)) : start;
+        var row = document.createElement('div'); row.className = 'slider-row';
+        row.innerHTML = '<label>' + REP_LABELS[v] + '</label>' +
+          '<input type="range" min="0" max="100" value="' + init + '" data-k="' + v + '">' +
+          '<span class="val">' + init + '%</span>';
+        rows.appendChild(row);
+      });
+      rows.querySelectorAll('input[type=range]').forEach(function (r) {
+        r.addEventListener('input', function () { rebalance(r); });
+      });
+      tallyRepartition();
+    }
+    // Keep the split at exactly 100%: when one slider moves, distribute the
+    // remaining budget across the others in proportion to their current values.
+    function rebalance(changed) {
+      var ranges = Array.from(document.querySelectorAll('#sliderRows input[type=range]'));
+      var changedVal = parseInt(changed.value, 10);
+      var others = ranges.filter(function (r) { return r !== changed; });
+      var remaining = 100 - changedVal;
+      var othersSum = others.reduce(function (s, r) { return s + parseInt(r.value, 10); }, 0);
+      var assigned = others.map(function (r) {
+        if (othersSum === 0) return Math.floor(remaining / others.length);
+        return Math.round(remaining * parseInt(r.value, 10) / othersSum);
+      });
+      // absorb any rounding drift into the last slider so the total is exact
+      var drift = remaining - assigned.reduce(function (s, v) { return s + v; }, 0);
+      if (assigned.length) assigned[assigned.length - 1] = Math.max(0, assigned[assigned.length - 1] + drift);
+      others.forEach(function (r, i) { r.value = assigned[i]; r.nextElementSibling.textContent = assigned[i] + '%'; });
+      changed.nextElementSibling.textContent = changedVal + '%';
+      tallyRepartition();
+    }
+    function tallyRepartition() {
+      var rows = document.querySelectorAll('#sliderRows input[type=range]');
+      var sum = 0, rep = {};
+      rows.forEach(function (r) { sum += parseInt(r.value, 10); rep[r.dataset.k] = parseInt(r.value, 10); });
+      data.repartition = rep;
+      var t = document.getElementById('repTotal');
+      t.textContent = 'Total: ' + sum + '%' + (sum === 100 ? ' ✓' : ' (aim for 100%)');
+      t.className = 'total ' + (sum === 100 ? 'good' : 'bad');
+      refreshNextButton();
+    }
+
+    /* ---------- file upload (R2 in prod) ---------- */
+    var dropzone = document.getElementById('dropzone');
+    var fileInput = document.getElementById('fileInput');
+    var fileList = document.getElementById('fileList');
+    var TAGS = ['Catalog', 'Price list', 'Brand assets', 'Customer list', 'Other'];
+
+    dropzone.addEventListener('click', function () { fileInput.click(); });
+    ['dragover', 'dragenter'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add('drag'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove('drag'); }); });
+    dropzone.addEventListener('drop', function (e) { addFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', function () { addFiles(fileInput.files); fileInput.value = ''; });
+
+    function addFiles(list) {
+      Array.from(list).forEach(function (file) {
+        var id = 'f' + Date.now() + Math.random().toString(36).slice(2, 6);
+        var rec = { id: id, name: file.name, size: file.size, tag: 'Catalog' };
+        data.files.push(rec);
+        var item = document.createElement('div'); item.className = 'fileitem'; item.dataset.id = id;
+        item.innerHTML =
+          '<i class="ftype ' + iconFor(file.name) + '"></i>' +
+          '<div class="fmeta"><div class="fname">' + file.name + ' <span style="color:#9aa0ac;font-weight:400;">(' + fmtSize(file.size) + ')</span></div>' +
+          '<div class="bar"><div></div></div></div>' +
+          '<select class="ftag">' + TAGS.map(function (t) { return '<option>' + t + '</option>'; }).join('') + '</select>' +
+          '<button class="rm" title="Remove"><i class="fas fa-times"></i></button>';
+        fileList.appendChild(item);
+        item.querySelector('.ftag').addEventListener('change', function (e) { rec.tag = e.target.value; });
+        item.querySelector('.rm').addEventListener('click', function () {
+          data.files = data.files.filter(function (f) { return f.id !== id; }); item.remove();
+        });
+        var bar = item.querySelector('.bar > div');
+        if (LIVE) {
+          uploadToBackend(file, rec, bar, item);
+        } else {
+          // mock: animate to 100%
+          var pct = 0; var t = setInterval(function () { pct += 20; bar.style.width = Math.min(pct, 100) + '%'; if (pct >= 100) clearInterval(t); }, 120);
+        }
+      });
+    }
+    function uploadToBackend(file, rec, bar, item) {
+      function fail() {
+        bar.style.background = 'var(--err)'; bar.style.width = '100%';
+        var nm = item.querySelector('.fname');
+        if (nm && !nm.dataset.failed) { nm.dataset.failed = '1'; nm.insertAdjacentHTML('beforeend', ' <span style="color:var(--err)">— upload failed</span>'); }
+      }
+      var fd = new FormData();
+      fd.append('session_token', sessionToken || '');
+      fd.append('tag', rec.tag || '');
+      fd.append('file', file);
+      var x = new XMLHttpRequest();
+      x.open('POST', CFG.apiBase + '/upload');
+      x.upload.onprogress = function (e) { if (e.lengthComputable) bar.style.width = Math.round(e.loaded / e.total * 100) + '%'; };
+      x.onload = function () {
+        try { var j = JSON.parse(x.responseText); if (j.session_token) setToken(j.session_token); if (j.path) rec.path = j.path; } catch (e) {}
+        if (x.status >= 200 && x.status < 300) { bar.style.width = '100%'; } else { fail(); }
+      };
+      x.onerror = fail;
+      x.send(fd);
+    }
+    function iconFor(n) {
+      n = n.toLowerCase();
+      if (/\.(xlsx?|csv)$/.test(n)) return 'fas fa-file-excel';
+      if (/\.pdf$/.test(n)) return 'fas fa-file-pdf';
+      if (/\.(png|jpe?g|gif|webp)$/.test(n)) return 'fas fa-file-image';
+      if (/\.zip$/.test(n)) return 'fas fa-file-zipper';
+      return 'fas fa-file';
+    }
+    function fmtSize(b) { return b > 1e6 ? (b / 1e6).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1e3)) + ' KB'; }
+
+    /* ---------- text/textarea capture ---------- */
+    document.querySelectorAll('input[name], textarea[name]').forEach(function (inp) {
+      inp.addEventListener('input', function () {
+        data[inp.name] = inp.value;
+        if (inp.closest('.field')) clearError(inp.closest('.field'));
+        refreshNextButton();
+      });
+    });
+    document.getElementById('consent').addEventListener('change', function () {
+      data.consent = this.checked; refreshNextButton();
+      clearError(this.closest('.field'));
+    });
+
+    /* ---------- "Other" selects reveal a free text field ---------- */
+    document.querySelectorAll('select.has-other').forEach(function (sel) {
+      var other = sel.parentElement.querySelector('.other-input');
+      sel.addEventListener('change', function () {
+        data[sel.name] = sel.value;
+        var show = sel.value === 'Other';
+        other.style.display = show ? 'block' : 'none';
+        if (show) { other.focus(); } else { other.value = ''; data[other.name] = ''; }
+      });
+    });
+
+    /* ---------- URL fields: auto-prepend https:// instead of forcing it ---------- */
+    function normalizeUrl(v) { v = (v || '').trim(); if (v && !/^https?:\/\//i.test(v)) v = 'https://' + v; return v; }
+    document.querySelectorAll('.field[data-validate="url"] input').forEach(function (inp) {
+      inp.addEventListener('blur', function () {
+        if (inp.value.trim()) { inp.value = normalizeUrl(inp.value); data[inp.name] = inp.value; clearError(inp.closest('.field')); }
+      });
+    });
+
+    /* ---------- validation ---------- */
+    function stepValid(n) {
+      var stepEl = document.querySelector('.step[data-step="' + n + '"]');
+      if (n === 1) return !!data.booking;
+      var ok = true;
+      stepEl.querySelectorAll('.field[data-validate]').forEach(function (f) {
+        var type = f.dataset.validate;
+        if (type === 'text') { if (!val(f, 'input')) ok = false; }
+        else if (type === 'url') { if (!/^https?:\/\/.+\..+/.test(normalizeUrl(val(f, 'input')))) ok = false; }
+        else if (type === 'email') { var v = val(f, 'input'); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) ok = false; }
+        else if (type === 'single') { if (!f.querySelector('.choice.selected')) ok = false; }
+        else if (type === 'multi') { if (!f.querySelector('.choice.selected')) ok = false; }
+        else if (type === 'consent') { if (!data.consent) ok = false; }
+        else if (type === 'phone-cond') { if (data.contact_pref === 'phone' && !val(f, 'input')) ok = false; }
+      });
+      // repartition must total 100 when shown
+      if (n === 5) {
+        var rep = document.getElementById('repartition');
+        if (rep.classList.contains('show')) {
+          var sum = 0; document.querySelectorAll('#sliderRows input').forEach(function (r) { sum += parseInt(r.value, 10); });
+          if (sum !== 100) ok = false;
+        }
+      }
+      return ok;
+    }
+    function val(field, sel) { var el = field.querySelector(sel); return el ? el.value.trim() : ''; }
+    function clearError(node) { var f = node.closest ? node.closest('.field') : node; if (f) f.classList.remove('invalid'); }
+    function markErrors(n) {
+      var stepEl = document.querySelector('.step[data-step="' + n + '"]');
+      stepEl.querySelectorAll('.field[data-validate]').forEach(function (f) {
+        var type = f.dataset.validate; var bad = false;
+        if (type === 'text') bad = !val(f, 'input');
+        else if (type === 'url') bad = !/^https?:\/\/.+\..+/.test(normalizeUrl(val(f, 'input')));
+        else if (type === 'email') bad = !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val(f, 'input'));
+        else if (type === 'single' || type === 'multi') bad = !f.querySelector('.choice.selected');
+        else if (type === 'consent') bad = !data.consent;
+        else if (type === 'phone-cond') bad = (data.contact_pref === 'phone' && !val(f, 'input'));
+        if (bad) f.classList.add('invalid');
+      });
+    }
+    // Only step 1 gates the button (it has no inline-error field — the
+    // calendar is the action). Every other step stays clickable so the
+    // user gets explicit validation feedback instead of a dead button.
+    function refreshNextButton() { btnNext.disabled = (current === 1 && !data.booking); }
+
+    /* ---------- save progress (per step) ---------- */
+    function saveProgress(n) {
+      saveState.className = 'save'; saveState.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving…';
+      if (!LIVE) {
+        setTimeout(function () { saveState.className = 'save ok'; saveState.innerHTML = '<i class="fas fa-check"></i> Progress saved'; }, 500);
+        return;
+      }
+      api('save', { session_token: sessionToken, step: n, data: data, booking: data.booking || null })
+        .then(function (res) {
+          if (res.session_token) setToken(res.session_token);
+          saveState.className = 'save ok'; saveState.innerHTML = '<i class="fas fa-check"></i> Progress saved';
+        })
+        .catch(function () {
+          saveState.className = 'save'; saveState.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Save failed — we\'ll retry';
+        });
+    }
+
+    /* ---------- navigation ---------- */
+    btnNext.addEventListener('click', function () {
+      if (!stepValid(current)) {
+        markErrors(current);
+        var firstErr = document.querySelector('.step[data-step="' + current + '"] .field.invalid');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      saveProgress(current);
+      dl.push({ event: 'demo_form_step', step: current });
+      if (current < TOTAL_STEPS) showStep(current + 1);
+      else submitForm();
+    });
+    btnBack.addEventListener('click', function () { if (current > 1) showStep(current - 1); });
+
+    /* ---------- final submit ---------- */
+    function submitForm() {
+      data.email = data.email || (document.querySelector('input[name=email]') || {}).value;
+      var slot = (data.booking && data.booking.slot) || 'your selected slot';
+      function finish(dueLabel, email) {
+        document.getElementById('confSlot').textContent = slot;
+        document.getElementById('confEmail').textContent = email || data.email || 'your inbox';
+        document.getElementById('confDue').textContent = dueLabel || 'about 3 business days before your demo';
+        dl.push({ event: 'demo_brief_completed', offer: 'personalized_demo_store' });
+        clearToken();
+        showStep(9);
+      }
+      if (!LIVE) { finish('about 3 business days before your demo', data.email); return; }
+      btnNext.disabled = true; btnNext.innerHTML = 'Submitting… <i class="fas fa-circle-notch fa-spin"></i>';
+      // make sure the latest answers are persisted, then finalize
+      api('save', { session_token: sessionToken, step: TOTAL_STEPS, data: data, booking: data.booking || null })
+        .then(function (res) { if (res.session_token) setToken(res.session_token); return api('submit', { session_token: sessionToken }); })
+        .then(function (res) { finish(res.data_due_label, res.email); })
+        .catch(function () {
+          btnNext.disabled = false; btnNext.innerHTML = 'Submit &amp; build my demo <i class="fas fa-check"></i>';
+          alert('Sorry — something went wrong submitting your brief. Please try again.');
+        });
+    }
+
+    // boot
+    showStep(1);
+  </script>
+</body>
+
+</html>

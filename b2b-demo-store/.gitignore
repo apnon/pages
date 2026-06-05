@@ -1,0 +1,9 @@
+# Heavy full-res originals — not used by the page (resized versions are served)
+assets/gallery/full/
+
+# Server-side infra — deployed to the VPS, not hosted on GitHub Pages
+vps/
+supabase/
+
+# Real secrets, never commit
+**/.env
