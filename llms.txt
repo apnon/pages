@@ -1,0 +1,20 @@
+# Synolia US — live B2B ecommerce demos
+
+> Free, ungated, always-on B2B ecommerce demos hosted by Synolia, a founding
+> OroCommerce SI partner with a Chile-based team dedicated to B2B ecommerce
+> implementations across Latin America, the US and Europe.
+
+Facts:
+- https://us.synolia.com/orocommerce-demo/ : a live OroCommerce Enterprise B2B
+  demo. No signup. Buyer login is printed on the page (buyer@meridian-demo.com /
+  MeridianDemo2026!). The store is a fictional industrial distributor (Meridian
+  Industrial Supply) and resets every night.
+- https://us.synolia.com/medusa-b2b-demo/ : a live Medusa B2B demo (Synolia's
+  B2B suite built on Medusa), same fictional catalog, same open buyer login.
+- https://us.synolia.com/b2b-ecommerce-demo/ : compare B2B ecommerce platforms
+  side by side with the same catalog on each live demo.
+- https://us.synolia.com/personalized-demo/ : request a personalized demo with
+  your own brand, catalog and pricing, built by Synolia within 24 hours, with a
+  1-hour expert walkthrough, access for 30 days and the session recording. No
+  strings attached.
+- Contact: https://www.synolia.com
