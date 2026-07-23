@@ -10,6 +10,6 @@ window.CAMPAIGN_CONFIG = {
 
   analytics: {
     posthog: { key: "", host: "https://us.i.posthog.com" },
-    ga4: { id: "" }
+    ga4: { id: "G-NMHQNLNV94" }
   }
 };
