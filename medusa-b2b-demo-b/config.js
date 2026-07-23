@@ -9,7 +9,7 @@ window.CAMPAIGN_CONFIG = {
   leadApiBase: "https://demo-api.us.synolia.com/api/demo",
 
   analytics: {
-    posthog: { key: "", host: "https://us.i.posthog.com" },
+    posthog: { key: "phc_omNAVDPJu6Su8Fvpe58DUDyRPsx6yEpKqj7Mi9eU6pc9", host: "https://us.i.posthog.com" },
     ga4: { id: "G-NMHQNLNV94" }
   }
 };
