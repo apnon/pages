@@ -110,14 +110,12 @@
           .vs-speed{position:absolute;inset:-20% -12%;z-index:-1;pointer-events:none;opacity:.5;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 34px);animation:vsSpeed 6s linear infinite}
           @keyframes vsSpeed{to{transform:translateX(-68px)}}
           .vs-vig{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 170px 46px rgba(0,0,0,.72)}
-          .vs-cap{position:absolute;top:16px;left:0;right:0;text-align:center;z-index:3;font-family:'Russo One',sans-serif;font-size:clamp(11px,1.5vw,15px);letter-spacing:.42em;text-transform:uppercase;color:#fff;text-shadow:0 0 14px rgba(185,44,138,.85);padding-left:.42em}
           .vs-ring{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:clamp(6px,3vw,54px);width:100%;max-width:1180px;padding:52px 16px 30px}
           .vs-fighter{display:flex;flex-direction:column;align-items:center;gap:9px;flex:0 1 auto;min-width:0}
           .vs-fighter.left{animation:vsInL .7s cubic-bezier(.2,.9,.2,1) both}
           .vs-fighter.right{animation:vsInR .7s cubic-bezier(.2,.9,.2,1) both}
           @keyframes vsInL{from{opacity:0;transform:translateX(-64px)}to{opacity:1;transform:none}}
           @keyframes vsInR{from{opacity:0;transform:translateX(64px)}to{opacity:1;transform:none}}
-          .vs-ptag{font-family:'Russo One',sans-serif;font-size:clamp(11px,1.3vw,15px);letter-spacing:.22em;color:#ff6ec2;text-shadow:0 0 10px rgba(185,44,138,.85)}
           .vs-emb-wrap{position:relative;display:flex;align-items:center;justify-content:center}
           .vs-emblem{display:block;width:clamp(124px,19vw,258px);height:auto;filter:drop-shadow(0 12px 28px rgba(0,0,0,.6));-webkit-mask-image:radial-gradient(circle at 50% 48%,#000 74%,transparent 92%);mask-image:radial-gradient(circle at 50% 48%,#000 74%,transparent 92%)}
           .vs-emblem.swap{animation:vsSwap .38s ease}
@@ -135,10 +133,6 @@
           .vs-chip{font-family:var(--font-mono);font-size:clamp(8px,1vw,10px);letter-spacing:.1em;padding:3px 10px;border-radius:999px}
           .vs-chip.live{color:#4dffa0;background:rgba(30,220,130,.14);border:1px solid rgba(30,220,130,.5);text-shadow:0 0 8px rgba(30,220,130,.55)}
           .vs-chip.req{color:#aab4c8;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
-          .vs-arrows{display:flex;gap:10px;margin-top:2px}
-          .vs-arrow{width:34px;height:30px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#eaf1f8;background:linear-gradient(180deg,#1b2d54,#0d1836);border:1px solid rgba(255,255,255,.18);border-bottom-width:3px;border-radius:8px;box-shadow:0 3px 0 rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12)}
-          .vs-arrow.press{animation:vsPress .32s ease}
-          @keyframes vsPress{0%{transform:translateY(0)}40%{transform:translateY(3px);background:linear-gradient(180deg,#ff3db0,#B92C8A);color:#fff;border-bottom-width:1px;box-shadow:0 0 16px rgba(255,61,176,.85)}100%{transform:translateY(0)}}
           .vs-center{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;flex:0 0 auto;z-index:4}
           .vs-slash{position:absolute;top:38%;left:50%;width:clamp(170px,26vw,340px);height:clamp(30px,4vw,54px);transform:translate(-50%,-50%) rotate(-20deg);background:linear-gradient(90deg,transparent,rgba(255,61,176,.5),rgba(255,255,255,.9),rgba(90,150,255,.5),transparent);filter:blur(2px);opacity:0;z-index:-1}
           .vs-slash.flash{animation:vsSlash .5s ease}
@@ -159,15 +153,13 @@
           @media (max-width:640px){
             .vs-arena{min-height:404px;margin:22px 0 8px}
             .vs-ring{padding:42px 8px 24px;gap:6px}
-            .vs-cap{letter-spacing:.26em}
-            .vs-arrow{width:28px;height:25px;font-size:11px}
             .vs-plate{padding:5px 9px}
             .vs-center{gap:10px}
           }
           @media (prefers-reduced-motion:reduce){
             .vs-fighter.left,.vs-fighter.right,.vs-speed,.vs-vs,.vs-brk i{animation:none}
             .vs-timer>span{animation:none;transform:scaleX(1)}
-            .vs-emblem.swap,.vs-arrow.press,.vs-slash.flash,.vs-shock.go,.vs-burst.slam .vs-vs,.vs-burst.hit .vs-vs{animation:none}
+            .vs-emblem.swap,.vs-slash.flash,.vs-shock.go,.vs-burst.slam .vs-vs,.vs-burst.hit .vs-vs{animation:none}
           }
         </style>
         <div class="vs-arena" id="vsArena" aria-hidden="true">
@@ -176,10 +168,8 @@
           <div class="vs-scan"></div>
           <div class="vs-speed"></div>
           <div class="vs-vig"></div>
-          <div class="vs-cap">Choose your platform</div>
           <div class="vs-ring">
             <div class="vs-fighter left">
-              <span class="vs-ptag">P1</span>
               <div class="vs-emb-wrap">
                 <span class="vs-brk"><i></i><i></i><i></i><i></i></span>
                 <img class="vs-emblem" id="vsImg1" src="assets/vs/oro-enterprise.webp" width="512" height="512" alt="" />
@@ -187,7 +177,6 @@
               <div class="vs-plate"><span class="vs-pname" id="vsName1">OroCommerce Enterprise</span></div>
               <span class="vs-ptagline" id="vsTag1">Enterprise B2B</span>
               <span class="vs-chip live" id="vsChip1">LIVE DEMO</span>
-              <div class="vs-arrows"><span class="vs-arrow" id="vsArrL1">&#9664;</span><span class="vs-arrow" id="vsArrR1">&#9654;</span></div>
             </div>
             <div class="vs-center">
               <div class="vs-slash" id="vsSlash"></div>
@@ -196,7 +185,6 @@
               <div class="vs-timer"><span></span></div>
             </div>
             <div class="vs-fighter right">
-              <span class="vs-ptag">P2</span>
               <div class="vs-emb-wrap">
                 <span class="vs-brk"><i></i><i></i><i></i><i></i></span>
                 <img class="vs-emblem" id="vsImg2" src="assets/vs/medusa.webp" width="512" height="512" alt="" />
@@ -204,7 +192,6 @@
               <div class="vs-plate"><span class="vs-pname" id="vsName2">Medusa JS</span></div>
               <span class="vs-ptagline" id="vsTag2">Headless, composable</span>
               <span class="vs-chip live" id="vsChip2">LIVE DEMO</span>
-              <div class="vs-arrows"><span class="vs-arrow" id="vsArrL2">&#9664;</span><span class="vs-arrow" id="vsArrR2">&#9654;</span></div>
             </div>
           </div>
         </div>
@@ -219,7 +206,7 @@
               { img: 'assets/vs/magento.webp', n: 'Magento Community', t: 'Open source classic', live: false }
             ];
             roster.forEach(function (e) { var im = new Image(); im.src = e.img; }); // preload for flash-free swaps
-            function F(s) { return { img: document.getElementById('vsImg' + s), name: document.getElementById('vsName' + s), tag: document.getElementById('vsTag' + s), chip: document.getElementById('vsChip' + s), arrR: document.getElementById('vsArrR' + s) }; }
+            function F(s) { return { img: document.getElementById('vsImg' + s), name: document.getElementById('vsName' + s), tag: document.getElementById('vsTag' + s), chip: document.getElementById('vsChip' + s) }; }
             var f1 = F(1), f2 = F(2);
             var burst = document.getElementById('vsBurst'), slash = document.getElementById('vsSlash'), shock = document.getElementById('vsShock');
             var i1 = 0, i2 = 2, side = 0;   // start on the two live demos: Oro Enterprise vs Medusa JS
@@ -235,7 +222,6 @@
               var cur = isP1 ? i1 : i2, other = isP1 ? i2 : i1;
               var ni = (cur + 1) % roster.length; if (ni === other) ni = (ni + 1) % roster.length; // never the same platform on both sides
               var f = isP1 ? f1 : f2;
-              once(f.arrR, 'press', 340);
               f.img.classList.remove('swap'); void f.img.offsetWidth; f.img.classList.add('swap');
               setTimeout(function () { if (isP1) { i1 = ni; } else { i2 = ni; } paint(f, roster[ni]); }, 180);
               setTimeout(function () { f.img.classList.remove('swap'); }, 400);
