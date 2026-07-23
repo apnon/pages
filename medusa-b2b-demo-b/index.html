@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medusa B2B Demo — See Medusa in B2B Mode, Live Now | Synolia</title>
+  <title>Medusa B2B Demo. See Medusa in B2B Mode, Live Now | Synolia</title>
   <meta name="description"
     content="See Medusa running in B2B mode, live, no signup. A full B2B storefront on the Synolia B2B suite for Medusa: company accounts, tier pricing, quotes and approvals. No per-seat license cost. Or get a personalized demo on your own catalog." />
   <meta name="robots" content="noindex,follow" />
@@ -13,7 +13,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Medusa B2B Demo — See Medusa in B2B Mode, Live Now" />
+  <meta property="og:title" content="Medusa B2B Demo. See Medusa in B2B Mode, Live Now" />
   <meta property="og:description"
     content="A full B2B storefront on the Synolia B2B suite for Medusa: company accounts, tier pricing, quotes and approvals. Headless, no per-seat license cost. Open it now, or get a personalized demo on your own catalog." />
   <meta property="og:url" content="https://us.synolia.com/medusa-b2b-demo" />
@@ -95,7 +95,7 @@
               </button>
             </div>
             <p class="plate-note"><strong>Log in as a buyer</strong> to see B2B pricing, quotes, approvals and company
-              accounts. Storefront credentials only — back-office access comes with your own personalized demo.</p>
+              accounts. Storefront credentials only. Back-office access comes with your own personalized demo.</p>
           </div>
         </div>
       </div>
@@ -207,9 +207,9 @@
             down.</p>
         </div>
         <ul>
-          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Modern headless stack</strong> — composable, API-first, and yours to extend without platform lock-in.</div></li>
-          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>No per-seat license cost</strong> — Medusa is open source; you invest in the build, not recurring seats.</div></li>
-          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>AI-assisted implementation</strong> — Synolia builds and integrates the B2B suite around your systems.</div></li>
+          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Modern headless stack</strong>: composable, API-first, and yours to extend without platform lock-in.</div></li>
+          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>No per-seat license cost</strong>: Medusa is open source; you invest in the build, not recurring seats.</div></li>
+          <li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>AI-assisted implementation</strong>: Synolia builds and integrates the B2B suite around your systems.</div></li>
         </ul>
       </div>
     </div>
@@ -381,29 +381,52 @@
 
       function emailValid(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v || '').trim()); }
 
-      function apiPost(path, body) {
+      var inFlight = false, savedOnce = false, savedToken = null;
+      var NET_MSG = 'We could not send this. Check your connection and try again.';
+      var PARTIAL_MSG = 'Your details are saved. The final confirmation did not go through. Please try again.';
+
+      /* ---------- hardened POST: timeout + network / status / bad-body all surface as errors ---------- */
+      function apiPost(path, body, timeoutMs) {
+        var ctrl = ('AbortController' in window) ? new AbortController() : null;
+        var timedOut = false, timer = null;
+        if (ctrl) timer = setTimeout(function () { timedOut = true; ctrl.abort(); }, timeoutMs || 15000);
         return fetch(API + path, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined
         }).then(function (r) {
-          return r.json().catch(function () { return {}; }).then(function (j) {
-            if (!r.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + r.status));
+          return r.text().then(function (txt) {
+            if (timer) clearTimeout(timer);
+            var j = {};
+            if (txt) { try { j = JSON.parse(txt); } catch (e) { j = null; } }
+            if (!r.ok) throw new Error('http_' + r.status);
+            if (j === null) throw new Error('bad_body');
+            if (j.ok === false) throw new Error(j.error || 'server_error');
             return j;
           });
+        }, function () {
+          if (timer) clearTimeout(timer);
+          throw new Error(timedOut ? 'timeout' : 'network');
         });
+      }
+
+      function finishOk(email) {
+        T.identify(email);
+        T.track('lead_submitted', { platform: 'medusa', landing_page: '/medusa-b2b-demo-b' });
+        form.style.display = 'none'; successEl.style.display = 'block'; successEl.classList.add('show');
+        window.scrollTo({ top: successEl.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+      }
+      function setBusy(busy) {
+        if (busy) { if (submitBtn.dataset.orig == null) submitBtn.dataset.orig = submitBtn.innerHTML; submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+        else { submitBtn.disabled = false; if (submitBtn.dataset.orig != null) { submitBtn.innerHTML = submitBtn.dataset.orig; delete submitBtn.dataset.orig; } }
       }
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+        if (inFlight) return;
         errEl.classList.remove('show');
         var emailField = form.querySelector('.field[data-validate="email"]');
         var email = form.email.value.trim();
-        if (!emailValid(email)) {
-          emailField.classList.add('invalid');
-          form.email.focus();
-          return;
-        }
+        if (!emailValid(email)) { emailField.classList.add('invalid'); form.email.focus(); return; }
         emailField.classList.remove('invalid');
 
         var data = {
@@ -421,29 +444,23 @@
         };
 
         if (!API) {
+          // no backend configured, still confirm to the user and record the event
           T.identify(email); T.track('lead_submitted', { platform: 'medusa', mode: 'no_api' });
-          form.style.display = 'none'; successEl.style.display = 'block'; successEl.classList.add('show');
-          window.scrollTo({ top: successEl.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
-          return;
+          finishOk(email); return;
         }
 
-        submitBtn.disabled = true;
-        var origHTML = submitBtn.innerHTML;
-        submitBtn.textContent = 'Sending…';
+        inFlight = true; setBusy(true);
+        // save once; on a retry after a submit failure, re-submit only (never a duplicate save)
+        var savePromise = savedOnce
+          ? Promise.resolve({ session_token: savedToken })
+          : apiPost('/save', { step: 'lead_form', data: data }, 15000).then(function (res) { savedOnce = true; savedToken = (res && res.session_token) || null; return res; });
 
-        apiPost('/save', { step: 'lead_form', data: data })
-          .then(function (res) {
-            var token = res.session_token;
-            return apiPost('/submit', { session_token: token });
-          })
-          .then(function () {
-            T.identify(email);
-            T.track('lead_submitted', { platform: 'medusa', landing_page: '/medusa-b2b-demo' });
-            form.style.display = 'none'; successEl.style.display = 'block'; successEl.classList.add('show');
-            window.scrollTo({ top: successEl.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
-          })
+        savePromise
+          .then(function () { return apiPost('/submit', { session_token: savedToken }, 15000); })
+          .then(function () { inFlight = false; finishOk(email); })
           .catch(function () {
-            submitBtn.disabled = false; submitBtn.innerHTML = origHTML;
+            inFlight = false; setBusy(false);
+            errEl.textContent = savedOnce ? PARTIAL_MSG : NET_MSG;
             errEl.classList.add('show');
           });
       });

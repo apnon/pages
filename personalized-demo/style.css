@@ -336,3 +336,8 @@ footer a:hover { color: var(--magenta); }
 a:focus-visible, .btn:focus-visible, .copy-btn:focus-visible, input:focus-visible, textarea:focus-visible, button:focus-visible {
   outline: 2px solid var(--magenta); outline-offset: 2px;
 }
+
+/* failed upload row is tappable to retry */
+.fileitem.retry { cursor: pointer; }
+.fileitem.retry:hover { border-color: var(--magenta); }
+.fileitem.retry .fi-state.err { text-decoration: underline; }

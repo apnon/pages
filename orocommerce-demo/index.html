@@ -447,8 +447,10 @@
 
       /* ---------- wizard state ---------- */
       var form = document.getElementById('leadForm');
-      var sessionToken = null;               // kept in memory only, no persistence across reload
+      var sessionToken = null;               // in memory only, no persistence across reload
       var leadData = {};
+      var step2Saved = false;                // once /save step 2 succeeds, a submit retry must not re-save
+      var inFlight = false;                  // double-submit guard for the step buttons
 
       var dot1 = document.getElementById('dot1'), dot2 = document.getElementById('dot2');
       var step1El = form.querySelector('.wiz-step[data-step="1"]');
@@ -460,14 +462,39 @@
       var skipBtn = document.getElementById('skipStep2');
       var wizSave = document.getElementById('wizSave');
 
+      var NET_MSG = 'We could not send this. Check your connection and try again.';
+      var PARTIAL_MSG = 'Your details are saved. The final confirmation did not go through. Please retry.';
+
       function emailValid(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v || '').trim()); }
       function normUrl(v) { v = (v || '').trim(); if (v && !/^https?:\/\//i.test(v)) v = 'https://' + v; return v; }
+      function showError(el, msg) { el.textContent = msg; el.classList.add('show'); }
+      function setBusy(btn, busy, label) {
+        if (busy) { if (btn.dataset.orig == null) btn.dataset.orig = btn.innerHTML; btn.disabled = true; btn.textContent = label || 'Sending…'; }
+        else { btn.disabled = false; if (btn.dataset.orig != null) { btn.innerHTML = btn.dataset.orig; delete btn.dataset.orig; } }
+      }
 
-      function apiPost(path, body) {
-        return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
-            if (!r.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + r.status)); return j;
-          }); });
+      /* ---------- hardened POST: timeout + network / status / bad-body all surface as errors ---------- */
+      function apiPost(path, body, timeoutMs) {
+        var ctrl = ('AbortController' in window) ? new AbortController() : null;
+        var timedOut = false, timer = null;
+        if (ctrl) timer = setTimeout(function () { timedOut = true; ctrl.abort(); }, timeoutMs || 15000);
+        return fetch(API + path, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined
+        }).then(function (r) {
+          return r.text().then(function (txt) {
+            if (timer) clearTimeout(timer);
+            var j = {};
+            if (txt) { try { j = JSON.parse(txt); } catch (e) { j = null; } }
+            if (!r.ok) throw new Error('http_' + r.status);
+            if (j === null) throw new Error('bad_body');
+            if (j.ok === false) throw new Error(j.error || 'server_error');
+            return j;
+          });
+        }, function () {
+          if (timer) clearTimeout(timer);
+          throw new Error(timedOut ? 'timeout' : 'network');
+        });
       }
 
       function showStep2() {
@@ -484,8 +511,18 @@
         document.getElementById('wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
-      /* ---------- STEP 1 → save (notify:true) ---------- */
+      /* ---------- STEP 1 save (notify:true); reusable so step 2 can re-run it if the token is missing ---------- */
+      function saveStep1() {
+        return apiPost('/save', { notify: true, step: 1, data: leadData }, 15000).then(function (res) {
+          if (res && res.session_token) sessionToken = res.session_token;
+          T.identify(leadData.email);
+          T.track('lead_submitted', { platform: PLATFORM, landing_page: LANDING });
+          return res;
+        });
+      }
+
       toStep2Btn.addEventListener('click', function () {
+        if (inFlight) return;
         err1.classList.remove('show');
         var nameF = step1El.querySelector('.field[data-validate="text"]');
         var emailF = step1El.querySelector('.field[data-validate="email"]');
@@ -511,19 +548,38 @@
           showStep2(); return;
         }
 
-        toStep2Btn.disabled = true; var orig = toStep2Btn.innerHTML; toStep2Btn.textContent = 'Starting…';
-        apiPost('/save', { notify: true, step: 1, data: leadData })
-          .then(function (res) {
-            if (res.session_token) sessionToken = res.session_token;
-            T.identify(email);
-            T.track('lead_submitted', { platform: PLATFORM, landing_page: LANDING });
-            showStep2();
-          })
-          .catch(function () { toStep2Btn.disabled = false; toStep2Btn.innerHTML = orig; err1.classList.add('show'); });
+        inFlight = true; setBusy(toStep2Btn, true, 'Starting…');
+        saveStep1().then(function () {
+          inFlight = false; setBusy(toStep2Btn, false);
+          showStep2();
+        }).catch(function () {
+          inFlight = false; setBusy(toStep2Btn, false);
+          showError(err1, NET_MSG);
+        });
       });
 
-      /* ---------- file uploads (per-file, on selection) ---------- */
+      /* ---------- file uploads (per-file, on selection; a failure stays visible and is retriable) ---------- */
       function fmtSize(b) { return b > 1e6 ? (b / 1e6).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1e3)) + ' KB'; }
+      function uploadFile(file, stateEl, item, tag) {
+        stateEl.textContent = 'Uploading…'; stateEl.className = 'fi-state'; item.classList.remove('retry');
+        var ctrl = ('AbortController' in window) ? new AbortController() : null;
+        var timedOut = false, timer = null;
+        if (ctrl) timer = setTimeout(function () { timedOut = true; ctrl.abort(); }, 90000);
+        var fd = new FormData();
+        fd.append('file', file); fd.append('tag', tag);
+        if (sessionToken) fd.append('session_token', sessionToken);
+        fetch(API + '/upload', { method: 'POST', body: fd, signal: ctrl ? ctrl.signal : undefined })
+          .then(function (r) {
+            return r.text().then(function (txt) {
+              if (timer) clearTimeout(timer);
+              var j = {}; if (txt) { try { j = JSON.parse(txt); } catch (e) { j = null; } }
+              if (!r.ok) throw new Error('http'); if (j === null) throw new Error('bad_body');
+              if (j.ok === false) throw new Error('server'); return j;
+            });
+          }, function () { if (timer) clearTimeout(timer); throw new Error(timedOut ? 'timeout' : 'network'); })
+          .then(function (j) { if (j && j.session_token) sessionToken = j.session_token; stateEl.textContent = 'Uploaded'; stateEl.className = 'fi-state ok'; })
+          .catch(function () { stateEl.textContent = 'Upload failed, tap to retry'; stateEl.className = 'fi-state err'; item.classList.add('retry'); });
+      }
       function wireUploader(dropId, inputId, listId, tag) {
         var drop = document.getElementById(dropId), input = document.getElementById(inputId), list = document.getElementById(listId);
         drop.addEventListener('click', function () { input.click(); });
@@ -544,39 +600,51 @@
             item.querySelector('.fi-name').textContent = file.name;
             list.appendChild(item);
             var stateEl = item.querySelector('.fi-state');
-            item.querySelector('.fi-rm').addEventListener('click', function () { item.remove(); });
+            item.querySelector('.fi-rm').addEventListener('click', function (e) { e.stopPropagation(); item.remove(); });
+            item.addEventListener('click', function () { if (item.classList.contains('retry')) uploadFile(file, stateEl, item, tag); });
             if (tooBig) { stateEl.textContent = 'Too big (50 MB max)'; stateEl.className = 'fi-state err'; return; }
             if (!API) { stateEl.textContent = 'Ready'; stateEl.className = 'fi-state ok'; return; }
-            var fd = new FormData();
-            fd.append('file', file); fd.append('tag', tag);
-            if (sessionToken) fd.append('session_token', sessionToken);
-            fetch(API + '/upload', { method: 'POST', body: fd })
-              .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(); return j; }); })
-              .then(function (j) { if (j.session_token) sessionToken = j.session_token; stateEl.textContent = 'Uploaded'; stateEl.className = 'fi-state ok'; })
-              .catch(function () { stateEl.textContent = 'Upload failed'; stateEl.className = 'fi-state err'; });
+            uploadFile(file, stateEl, item, tag);
           });
         }
       }
       wireUploader('logoDrop', 'logoInput', 'logoList', 'logo');
       wireUploader('catDrop', 'catInput', 'catList', 'catalog');
 
-      /* ---------- STEP 2 finish → save + submit ---------- */
+      /* ---------- STEP 2 finish: ensure session, save once, submit (retry submit only on partial failure) ---------- */
+      function ensureSession() {
+        if (sessionToken || !API) return Promise.resolve();
+        return saveStep1(); // token lost somehow: re-run step 1 save transparently from stored fields
+      }
       function finalize(withCatalog) {
+        if (inFlight) return;
+        err2.classList.remove('show');
         var merged = Object.assign({}, leadData);
         if (withCatalog) {
           merged.catalog_urls = document.getElementById('catalog_urls').value.trim();
           merged.catalog_notes = document.getElementById('catalog_notes').value.trim();
         }
         if (!API) { T.track('catalog_submitted', { platform: PLATFORM, mode: 'no_api', skipped: !withCatalog }); showSuccess(); return; }
-        finishBtn.disabled = true; skipBtn.disabled = true; var orig = finishBtn.innerHTML; finishBtn.textContent = 'Sending…';
-        apiPost('/save', { session_token: sessionToken, step: 2, data: merged })
-          .then(function () { return apiPost('/submit', { session_token: sessionToken }); })
-          .then(function () { T.track('catalog_submitted', { platform: PLATFORM, landing_page: LANDING, skipped: !withCatalog }); showSuccess(); })
-          .catch(function () { finishBtn.disabled = false; skipBtn.disabled = false; finishBtn.innerHTML = orig; err2.classList.add('show'); });
+        inFlight = true; setBusy(finishBtn, true, 'Sending…'); skipBtn.disabled = true;
+        ensureSession()
+          .then(function () {
+            if (step2Saved) return null;
+            return apiPost('/save', { session_token: sessionToken, step: 2, data: merged }, 15000).then(function () { step2Saved = true; });
+          })
+          .then(function () { return apiPost('/submit', { session_token: sessionToken }, 15000); })
+          .then(function () {
+            inFlight = false;
+            T.track('catalog_submitted', { platform: PLATFORM, landing_page: LANDING, skipped: !withCatalog });
+            showSuccess();
+          })
+          .catch(function () {
+            inFlight = false; setBusy(finishBtn, false); skipBtn.disabled = false;
+            showError(err2, step2Saved ? PARTIAL_MSG : NET_MSG);
+          });
       }
-      finishBtn.addEventListener('click', function () { err2.classList.remove('show'); finalize(true); });
-      // Skip: step 1 already notified the team, so just confirm.
-      skipBtn.addEventListener('click', function () { T.track('catalog_submitted', { platform: PLATFORM, skipped: true }); showSuccess(); });
+      finishBtn.addEventListener('click', function () { finalize(true); });
+      // Skip: step 1 already notified the team, so just confirm (no extra network call).
+      skipBtn.addEventListener('click', function () { if (inFlight) return; T.track('catalog_submitted', { platform: PLATFORM, skipped: true }); showSuccess(); });
     })();
   </script>
 </body>
