@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OroCommerce Implementation &amp; ERP Integration Services | Synolia</title>
+  <meta name="description"
+    content="OroCommerce implementation and integration services by Synolia, a founding OroCommerce SI partner. ERP, PIM and CRM integration, Latin American electronic invoicing, multi-currency, and a first release you can actually ship." />
+  <link rel="canonical" href="https://us.synolia.com/orocommerce-implementation" />
+  <link rel="alternate" hreflang="en" href="https://us.synolia.com/orocommerce-implementation" />
+  <link rel="alternate" hreflang="es" href="https://us.synolia.com/agencia-orocommerce" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="OroCommerce Implementation &amp; ERP Integration Services | Synolia" />
+  <meta property="og:description"
+    content="ERP, PIM and CRM integration for OroCommerce, delivered by a founding SI partner with a Latin America team." />
+  <meta property="og:url" content="https://us.synolia.com/orocommerce-implementation" />
+  <meta property="og:image" content="https://us.synolia.com/orocommerce-implementation/assets/screens/quote.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://us.synolia.com/orocommerce-implementation#faq",
+    "mainEntity": [
+      { "@type": "Question", "name": "How long does an OroCommerce implementation take?", "acceptedAnswer": { "@type": "Answer", "text": "A focused first release typically goes live in three to six months. The range depends almost entirely on integration: how clean your ERP data is, how many pricing rules you have, and how many systems have to agree with each other. A large multi-country rollout runs longer and should be phased." } },
+      { "@type": "Question", "name": "Which ERPs do you integrate OroCommerce with?", "acceptedAnswer": { "@type": "Answer", "text": "SAP including S/4HANA and Business One, Microsoft Dynamics 365, Oracle, Infor, Sage, Odoo, and Latin American systems such as Softland and Defontana, as well as in-house and legacy ERPs through their APIs, files or database views." } },
+      { "@type": "Question", "name": "Do you handle Latin American electronic invoicing?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Electronic invoicing is country-specific: SII and DTE in Chile, CFDI and SAT in Mexico, DIAN in Colombia, SUNAT in Peru, and equivalent regimes elsewhere. We design the invoicing flow with your ERP and your local provider as part of the integration scope, not as a late surprise." } },
+      { "@type": "Question", "name": "Can you migrate us from an existing platform to OroCommerce?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We migrate catalogs, customer accounts, contract pricing, historic orders and content from Magento, Adobe Commerce, custom portals, and from spreadsheets and PDF order forms. The hard part is rarely the data, it is agreeing what the pricing rules actually are." } },
+      { "@type": "Question", "name": "Do you work fixed price or time and materials?", "acceptedAnswer": { "@type": "Answer", "text": "Both. We usually scope discovery and solution design as a fixed, short engagement, then run the build in increments. That way you get a real estimate based on your actual integration surface rather than a number invented before anyone looked at your ERP." } }
+    ]
+  }
+  </script>
+</head>
+
+<body data-platform="oro">
+
+  <header>
+    <div class="container header-inner">
+      <div class="brand-row">
+        <a href="https://www.synolia.com" class="logo" aria-label="Synolia"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+        <span class="plat-badge">OroCommerce · Founding SI Partner</span>
+      </div>
+      <div class="brand-row">
+        <div class="lang-switch">
+          <a href="/orocommerce-implementation/" class="on">EN</a>
+          <a href="/agencia-orocommerce/">ES</a>
+        </div>
+        <a href="#talk" class="btn btn-ghost header-cta">Scope your project</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">OroCommerce implementation &amp; integration</span>
+          <h1>Your OroCommerce project is <span class="hl">an integration project.</span></h1>
+          <p class="hero-sub">The storefront is the part everyone looks at. Orders, stock, customers, contract prices
+            and invoices moving correctly between OroCommerce and your ERP is the part that decides whether the project
+            works. Synolia has been doing exactly that since 2004, as one of OroCommerce's founding SI partners.</p>
+
+          <div class="hero-cta-row">
+            <a href="#talk" class="btn btn-primary btn-lg">
+              Get a straight read on scope
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#approach" class="btn btn-outline btn-lg">See how we run it</a>
+          </div>
+
+          <div class="trust-chips">
+            <div class="chip"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>ERP, PIM and CRM integration</strong> scoped before the estimate, not during the build.</div></div>
+            <div class="chip"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Latin American invoicing and tax</strong> handled per country, from the first workshop.</div></div>
+            <div class="chip"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>A first release you can ship</strong>, then build on. Not an eighteen-month program.</div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="browser">
+            <div class="browser-bar"><span></span><span></span><span></span><div class="browser-url">oro-meridian.shelfside.app/customer/quote</div></div>
+            <picture>
+              <source type="image/webp" srcset="./assets/screens/quote.webp" />
+              <img class="shot-img" src="./assets/screens/quote.png" alt="OroCommerce quote and RFQ workflow implemented by Synolia" />
+            </picture>
+          </div>
+          <div class="proof-strip">
+            <div class="ps"><div class="ps-n">2004</div><div class="ps-l">Building complex B2B commerce since</div></div>
+            <div class="ps"><div class="ps-n">Founding</div><div class="ps-l">One of OroCommerce's founding SI partners</div></div>
+            <div class="ps"><div class="ps-n">3-6 mo</div><div class="ps-l">Typical time to a first live release</div></div>
+            <div class="ps"><div class="ps-n ps-sm">ES·EN·FR</div><div class="ps-l">Delivery, training and support languages</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 44px;">
+    <div class="container">
+      <div class="geo-callout">
+        <p><strong>Synolia</strong> provides OroCommerce implementation and integration services: discovery and solution
+          design, ERP, PIM and CRM integration, catalog and pricing migration, custom bundle development, Latin American
+          electronic invoicing, and post-launch support. One of OroCommerce's founding SI partners, with a Chile-based
+          team covering Latin America, the US and Europe.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integration surface -->
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">What actually has to connect</span>
+        <h2>The integration surface, mapped before you get a number</h2>
+        <p class="lead">Every estimate we give is based on this map. If we have not looked at your systems, any number we
+          give you is a guess, and so is anyone else's.</p>
+      </div>
+
+      <div class="int-grid">
+        <div class="int-col">
+          <div class="ic-h">ERP</div>
+          <ul>
+            <li>SAP S/4HANA &amp; ECC</li>
+            <li>SAP Business One</li>
+            <li>Microsoft Dynamics 365</li>
+            <li>Oracle &amp; Infor</li>
+            <li>Sage &amp; Odoo</li>
+            <li>Softland, Defontana</li>
+            <li>In-house &amp; legacy</li>
+          </ul>
+        </div>
+        <div class="int-col">
+          <div class="ic-h">Product data</div>
+          <ul>
+            <li>Akeneo PIM</li>
+            <li>OroCommerce catalog</li>
+            <li>DAM &amp; media libraries</li>
+            <li>Attribute &amp; family modelling</li>
+            <li>Multi-language catalogs</li>
+            <li>Supplier data feeds</li>
+          </ul>
+        </div>
+        <div class="int-col">
+          <div class="ic-h">Customer &amp; sales</div>
+          <ul>
+            <li>OroCRM</li>
+            <li>Salesforce</li>
+            <li>HubSpot</li>
+            <li>Dynamics CRM</li>
+            <li>Corporate account hierarchies</li>
+            <li>Sales rep &amp; field ordering</li>
+          </ul>
+        </div>
+        <div class="int-col">
+          <div class="ic-h">LatAm specifics</div>
+          <ul>
+            <li>Chile: SII / DTE</li>
+            <li>Mexico: CFDI / SAT</li>
+            <li>Colombia: DIAN</li>
+            <li>Peru: SUNAT</li>
+            <li>Multi-currency &amp; FX</li>
+            <li>Local payment methods</li>
+            <li>Credit terms &amp; account payment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section" id="approach">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">How we run it</span>
+        <h2>Short discovery, honest estimate, incremental build</h2>
+        <p class="lead">Durations below are typical for a mid-sized manufacturer or distributor. Yours will move with the
+          state of your ERP data and the number of pricing rules you actually have, which is usually more than anyone
+          remembers.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="sn">01</div>
+          <div>
+            <h4>Discovery workshop</h4>
+            <p>Your customers, your pricing rules, your order paths, your systems. We run it with the people who
+              actually take the orders, not only with the steering committee. In Spanish, if that gets you better
+              answers.</p>
+            <span class="sdur">1 to 2 weeks</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">02</div>
+          <div>
+            <h4>Solution design and integration map</h4>
+            <p>What OroCommerce does natively, what needs configuration, what needs a custom bundle, and exactly which
+              data moves between which systems in which direction. This is the document your estimate is built on.</p>
+            <span class="sdur">2 to 3 weeks</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">03</div>
+          <div>
+            <h4>Build in increments, integration first</h4>
+            <p>We connect the ERP early rather than at the end, because that is where the surprises live. You see
+              working software every two weeks, on your data, not screenshots in a status report.</p>
+            <span class="sdur">8 to 16 weeks to first release</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">04</div>
+          <div>
+            <h4>Catalog, customers and pricing migration</h4>
+            <p>Runs in parallel with the build. Products, attributes, corporate accounts, contract price lists and
+              historic orders, from your current platform, your ERP, or the spreadsheets and PDFs that are really
+              running the business today.</p>
+            <span class="sdur">In parallel</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">05</div>
+          <div>
+            <h4>Pilot with real customers</h4>
+            <p>A controlled group of real buyers ordering for real, before you switch everyone over. This is where you
+              find out what your customers actually do, as opposed to what the workshop said they do.</p>
+            <span class="sdur">2 to 4 weeks</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">06</div>
+          <div>
+            <h4>Go live, then keep going</h4>
+            <p>Launch, then the second release. Support, evolution and the features you deliberately left out of release
+              one, now prioritized against what the pilot taught you.</p>
+            <span class="sdur">Ongoing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- First release scope -->
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">Scope discipline</span>
+        <h2>What belongs in your first release, and what does not</h2>
+        <p class="lead">The most useful thing a partner can tell you is what to leave out. Here is roughly how we split
+          it, and we will argue about it with you honestly.</p>
+      </div>
+
+      <div class="rescue">
+        <div class="rescue-card good">
+          <div class="rc-h">Release one</div>
+          <ul>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Corporate accounts and roles</strong> for your real customer structure.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Contract and tier pricing</strong> resolving correctly per customer.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Self-service ordering and reordering</strong>, the volume driver.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Live ERP integration</strong> for stock, prices, orders and invoices.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><strong>Compliant local invoicing</strong> in your launch country.</div></li>
+          </ul>
+        </div>
+        <div class="rescue-card bad">
+          <div class="rc-h">Deliberately later</div>
+          <ul>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/></svg></span><div>Every country and every brand at once.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/></svg></span><div>A full marketplace before the core store has users.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/></svg></span><div>Perfect product data for the whole catalog.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/></svg></span><div>Rebuilding every approval rule that exists on paper.</div></li>
+            <li><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/></svg></span><div>A redesign of the whole brand, mid-project.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live demo band -->
+  <section class="section tight" id="demo" style="padding-top:88px;">
+    <div class="container">
+      <div class="demo-band">
+        <div class="db-in">
+          <span class="eyebrow">Live OroCommerce Enterprise</span>
+          <h3>See what we build, before we talk about building it</h3>
+          <p>A real OroCommerce Enterprise B2B storefront we host. Log in as a buyer and run a quote through to an
+            approved order. It is the same platform your project would be built on, and it resets every night.</p>
+          <div class="db-cta">
+            <a href="https://oro-meridian.shelfside.app" target="_blank" rel="noopener" class="btn btn-on-dark btn-lg" data-demo-cta>
+              Open the live demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <p class="db-note">// Want it on your own catalog and pricing? We build that within 24 hours.</p>
+        </div>
+        <div class="db-creds">
+          <div class="db-row">
+            <span class="k">Email</span>
+            <span class="v">buyer@meridian-demo.com</span>
+            <button class="copy-btn" type="button" data-copy="buyer@meridian-demo.com" aria-label="Copy demo email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            </button>
+          </div>
+          <div class="db-row">
+            <span class="k">Password</span>
+            <span class="v">MeridianDemo2026!</span>
+            <button class="copy-btn" type="button" data-copy="MeridianDemo2026!" aria-label="Copy demo password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            </button>
+          </div>
+          <p class="db-note">// Meridian Industrial Supply is a fictional distributor we built to show the platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lead form -->
+  <section class="section bg-soft" id="talk">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">Scope it properly</span>
+        <h2>Tell us what has to connect</h2>
+        <p class="lead">Your ERP, your pricing model, your countries. We will tell you what the real integration surface
+          looks like and what it means for timeline and budget. In Spanish or English.</p>
+      </div>
+
+      <div class="lead-panel" id="leadPanel">
+        <div class="lp-top">
+          <span class="lp-t">OroCommerce implementation enquiry</span>
+          <span class="lp-sla"><span class="pulse"></span> We reply within one business day</span>
+        </div>
+        <div class="lp-body">
+          <form id="leadForm" novalidate>
+            <div class="field row-2">
+              <div class="field" data-validate="text">
+                <label for="fullname">Your name <span class="req">*</span></label>
+                <input type="text" id="fullname" name="fullname" placeholder="Jane Doe" autocomplete="name" />
+                <div class="err">Please enter your name.</div>
+              </div>
+              <div class="field" data-validate="email">
+                <label for="email">Work email <span class="req">*</span></label>
+                <input type="email" id="email" name="email" placeholder="jane@yourcompany.com" autocomplete="email" />
+                <div class="err">Please enter a valid work email.</div>
+              </div>
+            </div>
+
+            <div class="field row-2">
+              <div class="field">
+                <label for="company">Company <span class="opt">(optional)</span></label>
+                <input type="text" id="company" name="company" placeholder="Acme Manufacturing" autocomplete="organization" />
+              </div>
+              <div class="field">
+                <label for="role">Role <span class="opt">(optional)</span></label>
+                <input type="text" id="role" name="role" placeholder="IT Director" autocomplete="organization-title" />
+              </div>
+            </div>
+
+            <div class="field row-2">
+              <div class="field">
+                <label for="country">Country <span class="opt">(optional)</span></label>
+                <select id="country" name="country">
+                  <option value="">Select a country</option>
+                  <option>Mexico</option><option>Colombia</option><option>Peru</option>
+                  <option>Chile</option><option>Argentina</option><option>Uruguay</option>
+                  <option>Ecuador</option><option>Bolivia</option><option>Paraguay</option>
+                  <option>Costa Rica</option><option>Guatemala</option><option>Panama</option>
+                  <option>Dominican Republic</option><option>Brazil</option>
+                  <option>United States</option><option>Spain</option><option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="website">Website <span class="opt">(optional)</span></label>
+                <input type="text" id="website" name="website" placeholder="www.yourcompany.com" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="project">Which ERP, and what are you replacing? <span class="opt">(optional)</span></label>
+              <textarea id="project" name="project" placeholder="For example: SAP Business One, replacing an email and Excel ordering process for 400 dealers in Mexico and Colombia. Or: currently on Magento, contract pricing is unmanageable."></textarea>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="share_with_oro" name="share_with_oro" />
+              <label for="share_with_oro"><strong>Loop in OroCommerce.</strong> I am happy for Synolia to share my
+                details with OroCommerce, so the platform vendor and the implementation partner can support this
+                project together.</label>
+            </div>
+
+            <div class="form-error" id="leadError">Sorry, something went wrong. Please try again in a moment.</div>
+
+            <div class="wiz-foot">
+              <span></span>
+              <button type="button" class="btn btn-primary btn-lg" id="leadSend">
+                Send
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+            <p class="form-legal">We use your details only to answer you. No newsletter, no sequence, no spam.</p>
+          </form>
+        </div>
+      </div>
+
+      <div class="wiz-success" id="leadSuccess">
+        <div class="big-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h3>Got it. Thank you.</h3>
+        <p>We will come back to you within one business day with a first read on your integration surface, in Spanish
+          or English.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">FAQ</span>
+        <h2>Implementation questions</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3 class="faq-q">How long does an OroCommerce implementation take?</h3>
+          <p class="faq-a">A focused first release typically goes live in three to six months. The range depends almost
+            entirely on integration: how clean your ERP data is, how many pricing rules you have, and how many systems
+            have to agree with each other. A large multi-country rollout runs longer and should be phased.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Which ERPs do you integrate OroCommerce with?</h3>
+          <p class="faq-a">SAP including S/4HANA and Business One, Microsoft Dynamics 365, Oracle, Infor, Sage, Odoo,
+            and Latin American systems such as Softland and Defontana, as well as in-house and legacy ERPs through
+            their APIs, files or database views.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Do you handle Latin American electronic invoicing?</h3>
+          <p class="faq-a">Yes. Electronic invoicing is country-specific: SII and DTE in Chile, CFDI and SAT in Mexico,
+            DIAN in Colombia, SUNAT in Peru, and equivalent regimes elsewhere. We design the invoicing flow with your
+            ERP and your local provider as part of the integration scope, not as a late surprise.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Can you migrate us from an existing platform?</h3>
+          <p class="faq-a">Yes. We migrate catalogs, customer accounts, contract pricing, historic orders and content
+            from Magento, Adobe Commerce, custom portals, and from the spreadsheets and PDF order forms that are often
+            the real system. The hard part is rarely the data, it is agreeing what the pricing rules actually are.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Do you work fixed price or time and materials?</h3>
+          <p class="faq-a">Both. We usually scope discovery and solution design as a fixed, short engagement, then run
+            the build in increments. That way you get a real estimate based on your actual integration surface rather
+            than a number invented before anyone looked at your ERP.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="container">
+      <div class="cred-band">
+        <p class="q">Synolia is one of <strong>OroCommerce's founding SI partners</strong>, and our Chile-based team is
+          fully dedicated to B2B ecommerce implementations across Latin America, US and Europe.</p>
+        <p class="partner">// Building complex B2B commerce since 2004</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <a href="https://www.synolia.com" class="logo" aria-label="Synolia"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+      <div class="footer-right">
+        <a href="/agencia-orocommerce/">Español</a> &nbsp;·&nbsp;
+        <a href="/orocommerce-partner/">Partner</a> &nbsp;·&nbsp;
+        <a href="/orocommerce-developers/">Developers</a> &nbsp;·&nbsp;
+        <a href="/orocommerce-demo/">Live demo</a> &nbsp;·&nbsp;
+        <a href="https://www.synolia.com" target="_blank" rel="noopener">www.synolia.com</a>
+        <div style="margin-top:6px;">© 2026 Synolia. B2B ecommerce integrators.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="track.js"></script>
+  <script src="lead.js"></script>
+</body>
+
+</html>
