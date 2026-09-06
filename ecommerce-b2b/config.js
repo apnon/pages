@@ -10,7 +10,8 @@ window.CAMPAIGN_CONFIG = {
 
   analytics: {
     posthog: { key: "phc_omNAVDPJu6Su8Fvpe58DUDyRPsx6yEpKqj7Mi9eU6pc9", host: "https://us.i.posthog.com" },
-    ga4: { id: "G-NMHQNLNV94" }
+    ga4: { id: "G-NMHQNLNV94" },
+    googleAds: { id: "AW-10953719087", leadLabel: "QBa5CK391O8cEK_6keco" }
   },
 
   i18n: {

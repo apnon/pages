@@ -16,7 +16,7 @@
   var CFG = window.CAMPAIGN_CONFIG || {};
   var API = CFG.leadApiBase || "";
   var LANDING = CFG.landingPath || location.pathname;
-  var T = window.CampaignTrack || { attribution: function () { return {}; }, track: function () {}, identify: function () {} };
+  var T = window.CampaignTrack || { attribution: function () { return {}; }, track: function () {}, identify: function () {}, conversion: function () {} };
   var L = CFG.i18n || {};
   var MSG_NET = L.netError || "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.";
   var MSG_SENDING = L.sending || "Enviando…";
@@ -178,6 +178,8 @@
       T.identify(email, { company: data.company, country: data.country, segment: q.segment });
       // Segment goes to analytics so paid spend can be judged on qualified
       // leads rather than raw form fills.
+      // Google Ads conversion: the signal the campaign bids on.
+      T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
       T.track("lead_submitted", {
         intent: "category", landing_page: LANDING, country: data.country,
         segment: q.segment, score: q.score, revenue_band: data.revenue_band

@@ -54,10 +54,14 @@
     window.posthog.init(A.posthog.key, { api_host: A.posthog.host || "https://us.i.posthog.com", capture_pageview: true, session_recording: { maskAllInputs: true } });
     ph = window.posthog;
   }
-  if (A.ga4 && A.ga4.id) {
-    var s = document.createElement("script"); s.async = 1; s.src = "https://www.googletagmanager.com/gtag/js?id=" + A.ga4.id; document.head.appendChild(s);
+  // gtag serves both GA4 and Google Ads; load it once, then config each id.
+  if ((A.ga4 && A.ga4.id) || (A.googleAds && A.googleAds.id)) {
+    var tagId = (A.ga4 && A.ga4.id) || A.googleAds.id;
+    var s = document.createElement("script"); s.async = 1; s.src = "https://www.googletagmanager.com/gtag/js?id=" + tagId; document.head.appendChild(s);
     window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
-    gtag("js", new Date()); gtag("config", A.ga4.id);
+    gtag("js", new Date());
+    if (A.ga4 && A.ga4.id) gtag("config", A.ga4.id);
+    if (A.googleAds && A.googleAds.id) gtag("config", A.googleAds.id);
   }
 
   function track(event, props) {
@@ -71,6 +75,16 @@
     if (window.gtag && email) gtag("set", "user_data", { email: email });
   }
 
-  window.CampaignTrack = { attribution: attribution, track: track, identify: identify };
+  /* Google Ads conversion. Fired from the page on a real lead, so bidding does
+     not depend on the GA4 import (our credential cannot create key events on
+     that property). Silently no-ops when the Ads id is not configured. */
+  function conversion(label, extra) {
+    if (!window.gtag || !A.googleAds || !A.googleAds.id || !label) return;
+    var payload = { send_to: A.googleAds.id + "/" + label };
+    if (extra) for (var k in extra) payload[k] = extra[k];
+    gtag("event", "conversion", payload);
+  }
+
+  window.CampaignTrack = { attribution: attribution, track: track, identify: identify, conversion: conversion };
   track("page_view", { campaign: CFG.campaign || null, path: location.pathname });
 })();

@@ -16,7 +16,7 @@
   var API = CFG.leadApiBase || "";
   var INTENT = CFG.intent || "partner";
   var LANDING = CFG.landingPath || location.pathname;
-  var T = window.CampaignTrack || { attribution: function () { return {}; }, track: function () {}, identify: function () {} };
+  var T = window.CampaignTrack || { attribution: function () { return {}; }, track: function () {}, identify: function () {}, conversion: function () {} };
   var L = CFG.i18n || {};
   var MSG_NET = L.netError || "We could not send this. Check your connection and try again.";
   var MSG_SENDING = L.sending || "Sending…";
@@ -125,6 +125,8 @@
 
     function done() {
       T.identify(email, { company: data.company, country: data.country });
+      // Google Ads conversion: the signal the campaign bids on.
+      T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
       T.track("lead_submitted", { intent: INTENT, landing_page: LANDING, country: data.country, share_with_oro: data.share_with_oro });
       showSuccess();
     }
