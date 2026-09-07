@@ -757,3 +757,25 @@ a:focus-visible, .btn:focus-visible, .copy-btn:focus-visible, input:focus-visibl
   .bc-person > div { text-align: center; }
   .bc-facts li { flex-direction: column; gap: 3px; align-items: flex-start; }
 }
+
+/* ---- Booking skeleton -----------------------------------------------------
+   HubSpot's embed takes a couple of seconds to paint. Revealing an empty box
+   in the meantime reads as broken, so the slot holds a placeholder of roughly
+   the right height until the iframe exists. */
+.book-skeleton {
+  min-height: 560px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  background: #fff; border: 1px solid var(--border); border-radius: 16px;
+}
+.bs-bar {
+  width: 190px; height: 4px; border-radius: 999px; overflow: hidden;
+  background: var(--border); position: relative;
+}
+.bs-bar::after {
+  content: ""; position: absolute; inset: 0; width: 40%; border-radius: 999px;
+  background: var(--magenta); animation: bsSlide 1.15s ease-in-out infinite;
+}
+@keyframes bsSlide { 0% { transform: translateX(-110%) } 100% { transform: translateX(260%) } }
+.bs-msg { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--ink-dim); }
+.bs-alt { font-size: 13px; color: var(--ink-dim); }
+.bs-alt a { color: var(--magenta); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }

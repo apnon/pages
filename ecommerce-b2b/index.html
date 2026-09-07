@@ -373,6 +373,13 @@
       </div>
 
       <div class="book-slot" id="bookSlot" hidden>
+        <!-- Shown until HubSpot's iframe paints, so the reveal never lands on a
+             blank screen. lead.js removes it once the iframe exists. -->
+        <div class="book-skeleton" id="bookSkeleton" aria-live="polite">
+          <div class="bs-bar"></div>
+          <p class="bs-msg">Cargando el calendario…</p>
+          <p class="bs-alt">¿Se demora? <a href="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation" target="_blank" rel="noopener" id="bookDirect">Ábrelo en una pestaña nueva</a></p>
+        </div>
         <div class="meetings-iframe-container"
              data-src="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation?embed=true"></div>
       </div>

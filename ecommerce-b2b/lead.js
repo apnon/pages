@@ -62,34 +62,81 @@
     select(0, false);
   })();
 
-  /* ---------- booking: load HubSpot only when asked ----------
-     The scheduler is a fixed-height cross-origin iframe we cannot restyle, so
-     it stays behind the card until someone actually wants a slot. That also
-     keeps HubSpot off the page for the majority who never book. */
+  /* ---------- booking ----------
+     Two competing goals: do not make every visitor download HubSpot's embed
+     (66 requests and a full tracking stack), but never reveal an empty box
+     either. So the script is fetched when the visitor *approaches* the booking
+     section, or hovers/focuses the button — by the time they click it is
+     usually painted. A skeleton covers the remaining gap, and a
+     new-tab link covers the case where it never paints at all. */
   (function () {
     var open = document.getElementById("bookOpen");
     var slot = document.getElementById("bookSlot");
+    var skel = document.getElementById("bookSkeleton");
+    var card = document.querySelector(".book-card");
     if (!open || !slot) return;
-    var loaded = false;
+
+    var requested = false;
+
+    function loadHubSpot() {
+      if (requested) return;
+      requested = true;
+      var s = document.createElement("script");
+      s.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+      s.async = true;
+      document.body.appendChild(s);
+
+      // Drop the skeleton as soon as HubSpot's iframe actually exists.
+      var box = slot.querySelector(".meetings-iframe-container");
+      if (!box || !skel) return;
+      var stop = setInterval(function () {
+        var f = box.querySelector("iframe");
+        if (!f) return;
+        // While the slot is hidden the iframe has no layout, so height is always
+        // 0 and cannot be the readiness signal; its existence means HubSpot's
+        // script has built it and it will paint when shown. Once visible, insist
+        // on real height.
+        var ready = slot.hidden ? true : f.getBoundingClientRect().height > 100;
+        if (ready) { skel.remove(); skel = null; clearInterval(stop); }
+      }, 150);
+      // Give up after 20s and leave the skeleton, which carries the new-tab link.
+      setTimeout(function () { clearInterval(stop); }, 20000);
+    }
+
+    // Warm it up on approach: one viewport of margin is usually a few seconds
+    // of scrolling, which is enough for the embed to be ready on click.
+    if ("IntersectionObserver" in window && card) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { loadHubSpot(); io.disconnect(); }
+        });
+      }, { rootMargin: "600px 0px" });
+      io.observe(card);
+    } else {
+      loadHubSpot();
+    }
+    // Anyone jumping straight to #hablemos, or reaching for the button.
+    open.addEventListener("mouseenter", loadHubSpot);
+    open.addEventListener("focus", loadHubSpot);
 
     open.addEventListener("click", function () {
-      var showing = !slot.hidden;
-      if (showing) {
+      loadHubSpot();
+      if (!slot.hidden) {
         slot.hidden = true;
         open.setAttribute("aria-expanded", "false");
         return;
       }
       slot.hidden = false;
       open.setAttribute("aria-expanded", "true");
-      if (!loaded) {
-        loaded = true;
-        var s = document.createElement("script");
-        s.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-        s.async = true;
-        document.body.appendChild(s);
-        T.track("booking_opened", { landing_page: LANDING });
-      }
-      slot.scrollIntoView({ behavior: "smooth", block: "start" });
+      T.track("booking_opened", { landing_page: LANDING });
+      // Scroll so the CARD stays on screen with the calendar under it. Scrolling
+      // to the slot itself put an as-yet-unpainted box full-screen.
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    var direct = document.getElementById("bookDirect");
+    if (direct) direct.addEventListener("click", function () {
+      T.track("booking_opened", { landing_page: LANDING, path: "new_tab" });
     });
   })();
 
