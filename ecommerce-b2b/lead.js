@@ -62,18 +62,48 @@
     select(0, false);
   })();
 
-  /* ---------- booking + fallback form toggle ----------
-     The HubSpot scheduler is the primary path. The short form ships visible in
-     the HTML and is collapsed here, so it still works with JS off. */
+  /* ---------- booking: load HubSpot only when asked ----------
+     The scheduler is a fixed-height cross-origin iframe we cannot restyle, so
+     it stays behind the card until someone actually wants a slot. That also
+     keeps HubSpot off the page for the majority who never book. */
+  (function () {
+    var open = document.getElementById("bookOpen");
+    var slot = document.getElementById("bookSlot");
+    if (!open || !slot) return;
+    var loaded = false;
+
+    open.addEventListener("click", function () {
+      var showing = !slot.hidden;
+      if (showing) {
+        slot.hidden = true;
+        open.setAttribute("aria-expanded", "false");
+        return;
+      }
+      slot.hidden = false;
+      open.setAttribute("aria-expanded", "true");
+      if (!loaded) {
+        loaded = true;
+        var s = document.createElement("script");
+        s.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+        s.async = true;
+        document.body.appendChild(s);
+        T.track("booking_opened", { landing_page: LANDING });
+      }
+      slot.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  })();
+
+  /* ---------- fallback form toggle ----------
+     Ships visible in the HTML and is collapsed here, so it still works with JS off. */
   (function () {
     var toggle = document.getElementById("altToggle");
     var panel = document.getElementById("leadPanel");
     if (!toggle || !panel) return;
     panel.classList.add("alt-hidden");
     toggle.addEventListener("click", function () {
-      var open = panel.classList.toggle("alt-hidden") === false;
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open) {
+      var shown = panel.classList.toggle("alt-hidden") === false;
+      toggle.setAttribute("aria-expanded", shown ? "true" : "false");
+      if (shown) {
         panel.scrollIntoView({ behavior: "smooth", block: "center" });
         var f = panel.querySelector("input"); if (f) f.focus({ preventScroll: true });
       }

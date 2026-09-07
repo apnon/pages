@@ -341,18 +341,40 @@
           invitación al tiro. Sin formularios largos y sin que nadie te persiga después.</p>
       </div>
 
-      <!-- HubSpot booking: they pick a slot and HubSpot sends the invite itself,
-           which is also why there is no confirmation email to build here. -->
-      <div class="book-panel">
-        <div class="meetings-iframe-container"
-             data-src="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation?embed=true"></div>
+      <!-- A designed card first; the HubSpot scheduler expands under it on click.
+           Embedding it up-front looked bolted-on (their iframe is a fixed 715px with
+           a large empty magenta panel we cannot restyle from outside), and it loaded
+           HubSpot on every pageview for the majority who never book. -->
+      <div class="book-card">
+        <div class="bc-person">
+          <picture>
+            <source type="image/webp" srcset="./assets/alexandre.webp" />
+            <img class="bc-photo" src="./assets/alexandre.jpg" alt="Alexandre Perrachon" width="72" height="72" />
+          </picture>
+          <div>
+            <div class="bc-name">Alexandre Perrachon</div>
+            <div class="bc-role">Ecommerce B2B · Synolia</div>
+          </div>
+        </div>
+
+        <ul class="bc-facts">
+          <li><span class="bc-k">Duración</span><span class="bc-v">30 minutos</span></li>
+          <li><span class="bc-k">Dónde</span><span class="bc-v">Google Meet</span></li>
+          <li><span class="bc-k">Idioma</span><span class="bc-v">Español, inglés o francés</span></li>
+          <li><span class="bc-k">Costo</span><span class="bc-v">Sin costo</span></li>
+        </ul>
+
+        <button type="button" class="btn btn-primary btn-lg bc-cta" id="bookOpen"
+                aria-expanded="false" aria-controls="bookSlot">
+          Elegir un horario
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <p class="bc-note">La invitación con el enlace te llega al instante.</p>
       </div>
 
-      <div class="book-alt">
-        <p class="ba-lead">¿Prefieres escribir primero?</p>
-        <button type="button" class="ba-toggle" id="altToggle" aria-expanded="false" aria-controls="altForm">
-          Déjanos tu correo y te respondemos
-        </button>
+      <div class="book-slot" id="bookSlot" hidden>
+        <div class="meetings-iframe-container"
+             data-src="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation?embed=true"></div>
       </div>
 
       <div class="lead-panel alt-hidden" id="leadPanel">
@@ -467,7 +489,6 @@
     </div>
   </footer>
 
-  <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
   <script src="config.js"></script>
   <script src="track.js"></script>
   <script src="lead.js"></script>

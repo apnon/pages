@@ -701,20 +701,42 @@ a:focus-visible, .btn:focus-visible, .copy-btn:focus-visible, input:focus-visibl
 }
 
 /* ============================================================
-   Booking panel
-   The offer is a conversation, so the primary path is HubSpot's own
-   scheduler: pick a slot, HubSpot sends the invite. The short form is a
-   secondary path for people who are not ready to commit to a time, and
-   it stays collapsed so the section reads as one action, not two.
+   Booking
+   A card we control, then HubSpot's scheduler on demand underneath it.
+   The embed is a fixed-height iframe with a large empty panel we cannot
+   restyle across origins, so it is not the first thing anyone sees, and
+   wrapping it in our own bordered card only produced a frame inside a
+   frame. Revealed on click it reads as a step, not as a stuck widget.
    ============================================================ */
-.book-panel {
-  max-width: 760px; margin: 40px auto 0; background: #fff;
+.book-card {
+  max-width: 560px; margin: 40px auto 0; background: #fff;
   border: 1px solid var(--border-strong); border-radius: 20px;
-  box-shadow: var(--shadow-lg); overflow: hidden; padding: 6px;
-  min-height: 640px;
+  box-shadow: var(--shadow-lg); padding: 30px 32px 28px; text-align: center;
 }
+.bc-person { display: flex; align-items: center; gap: 15px; justify-content: center; margin-bottom: 22px; }
+.bc-photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block;
+  border: 2px solid var(--magenta-line); }
+.bc-person > div { text-align: left; }
+.bc-name { font-size: 17px; font-weight: 600; color: var(--navy); letter-spacing: -.02em; }
+.bc-role { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--magenta); margin-top: 4px; }
+
+.bc-facts { list-style: none; display: grid; gap: 0; margin: 0 0 24px; text-align: left;
+  border-top: 1px solid var(--border); }
+.bc-facts li { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  padding: 10px 2px; border-bottom: 1px solid var(--border); }
+.bc-k { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-dim); }
+.bc-v { font-size: 14.5px; color: var(--navy); font-weight: 500; }
+.bc-cta { width: 100%; }
+.bc-note { font-size: 12.5px; color: var(--ink-dim); margin-top: 12px; }
+
+/* HubSpot's own card carries its border and shadow; adding ours made a
+   frame inside a frame, so this wrapper is deliberately bare. */
+.book-slot { max-width: 760px; margin: 22px auto 0; }
+.book-slot[hidden] { display: none; }
 .meetings-iframe-container { width: 100%; }
-.meetings-iframe-container iframe { width: 100% !important; min-height: 640px; border: 0; display: block; }
+.meetings-iframe-container iframe { width: 100% !important; border: 0; display: block; }
 
 .book-alt { text-align: center; margin: 26px auto 0; }
 .book-alt .ba-lead { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 8px; }
@@ -726,7 +748,12 @@ a:focus-visible, .btn:focus-visible, .copy-btn:focus-visible, input:focus-visibl
 .ba-toggle:hover { color: var(--magenta-deep); }
 .ba-toggle:focus-visible { outline: 2px solid var(--magenta); outline-offset: 2px; border-radius: 6px; }
 
-/* The fallback form ships visible; lead.js collapses it so it still works
-   with JS off. Same pattern as the doubt tiles. */
 .lead-panel.alt-hidden { display: none; }
 .lead-panel { margin-top: 22px; }
+
+@media (max-width: 560px) {
+  .book-card { padding: 24px 20px 22px; }
+  .bc-person { flex-direction: column; gap: 12px; }
+  .bc-person > div { text-align: center; }
+  .bc-facts li { flex-direction: column; gap: 3px; align-items: flex-start; }
+}
