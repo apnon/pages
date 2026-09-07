@@ -21,37 +21,6 @@
   var MSG_NET = L.netError || "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.";
   var MSG_SENDING = L.sending || "Enviando…";
 
-  /* ---------- ERP rotator ----------
-     Cycles the vendor logo in the integration diagram. Every logo is already
-     in the DOM; this only moves the .is-on class. If the visitor asked for
-     reduced motion, or JS never runs, the rotator falls back to a static chip
-     grid showing all of them at once (CSS .static). */
-  (function () {
-    var rot = document.getElementById("erpRotator");
-    if (!rot) return;
-    var names = rot.querySelectorAll(".erp-logo");
-    if (names.length < 2) return;
-
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { rot.classList.add("static"); return; }
-
-    rot.classList.remove("static");
-    var i = 0;
-    names[0].classList.add("is-on");
-    // Sequential swap, not a crossfade: these marks have wildly different
-    // widths (Oracle is a wide wordmark, TOTVS is a square), so two of them
-    // overlapping at partial opacity looks like a rendering fault. Fade the
-    // current one out first, then bring the next one in.
-    setInterval(function () {
-      names[i].classList.remove("is-on");
-      var next = (i + 1) % names.length;
-      setTimeout(function () {
-        names[next].classList.add("is-on");
-        i = next;
-      }, 200);
-    }, 2100);
-  })();
-
   /* ---------- objection bubbles ----------
      Markup ships with every answer panel visible and stacked, so with JS off
      or for a crawler the whole section still reads as plain content. Adding
@@ -93,54 +62,40 @@
     select(0, false);
   })();
 
-  /* ---------- silent qualification ----------
-     Scores sizing signals, not enthusiasm. Deliberately blunt: this only has
-     to be good enough to sort the inbox, the real call decides everything. */
-  var REVENUE_PTS = { "<5M": 0, "5-10M": 1, "10-50M": 2, "50-200M": 3, ">200M": 3, "": 0 };
-  var CUSTOMER_PTS = { "<50": 0, "50-200": 1, "200-1000": 2, ">1000": 2, "": 0 };
-  // Already running a portal or a storefront means a replatform, which is a
-  // real project with a real budget, not an exploratory conversation.
-  var CURRENT_PTS = { "portal-antiguo": 2, "ecommerce-actual": 2, "vendedores": 1, "email-excel": 1, "telefono": 1, "otro": 0, "": 0 };
+  /* ---------- booking + fallback form toggle ----------
+     The HubSpot scheduler is the primary path. The short form ships visible in
+     the HTML and is collapsed here, so it still works with JS off. */
+  (function () {
+    var toggle = document.getElementById("altToggle");
+    var panel = document.getElementById("leadPanel");
+    if (!toggle || !panel) return;
+    panel.classList.add("alt-hidden");
+    toggle.addEventListener("click", function () {
+      var open = panel.classList.toggle("alt-hidden") === false;
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        panel.scrollIntoView({ behavior: "smooth", block: "center" });
+        var f = panel.querySelector("input"); if (f) f.focus({ preventScroll: true });
+      }
+    });
+  })();
 
-  function qualify(d) {
-    var hasErp = !!(d.erp && d.erp.trim() && !/^(no|ninguno|nada|n\/a)$/i.test(d.erp.trim()));
-    var score = (REVENUE_PTS[d.revenue_band] || 0)
-              + (CUSTOMER_PTS[d.customer_band] || 0)
-              + (CURRENT_PTS[d.current_process] || 0)
-              + (hasErp ? 1 : 0);
-
-    // Everything optional left blank means we know nothing, which is NOT the
-    // same as knowing they are small. Never let an unqualified lead be filed
-    // as a disqualified one.
-    if (!d.revenue_band && !d.customer_band && !d.current_process && !hasErp) {
-      return { score: score, segment: "unknown",
-               routing_hint: "No sizing data given. Qualify on the call before deciding anything." };
-    }
-
-    var segment, hint;
-    if (d.revenue_band === "<5M") {
-      // Alexandre's explicit rule: under the joint-campaign threshold, handle
-      // with a lighter solution. A stated number outranks the other signals.
-      segment = "smb";
-      hint = "Stated under USD 5M. Below the joint-campaign threshold, do not register with OroCommerce.";
-      if (score >= 3) hint += " Other signals are strong though (" + score + "/8), worth a look.";
-    } else if (score >= 5) {
-      segment = "enterprise";
-      hint = "Enterprise fit. Candidate to register with OroCommerce.";
-    } else if (score >= 3) {
-      segment = "mid-market";
-      // Keep platform names out of this file: it is served publicly and the
-      // page deliberately does not advertise alternatives to OroCommerce.
-      hint = "Mid-market. Confirm platform fit on the call, depending on integration depth.";
-    } else {
-      segment = "smb";
-      hint = "Below the joint-campaign threshold. Handle with a lighter solution, do not register.";
-    }
-
-    if (!d.revenue_band) hint += " Revenue not disclosed, confirm on the call.";
-
-    return { score: score, segment: segment, routing_hint: hint };
-  }
+  /* ---------- HubSpot booking = a conversion too ----------
+     A booked meeting is worth more than a form fill, so it must reach Google Ads
+     as the same conversion; otherwise bidding only ever learns from the weaker
+     path. HubSpot's embed posts a message on success. */
+  (function () {
+    window.addEventListener("message", function (e) {
+      if (!e || !e.data) return;
+      var d = e.data;
+      var booked = d.meetingBookSucceeded === true ||
+                   (typeof d === "object" && d.meetingsPayload &&
+                    d.meetingsPayload.meetingBookSucceeded === true);
+      if (!booked) return;
+      T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
+      T.track("lead_submitted", { intent: "category", landing_page: LANDING, path: "hubspot_booking" });
+    }, false);
+  })();
 
   /* ---------- form ---------- */
   var form = document.getElementById("leadForm");
@@ -197,34 +152,24 @@
       fullname: form.fullname.value.trim(),
       email: email,
       company: form.company.value.trim(),
-      role: form.role.value.trim(),
-      country: form.country.value,
-      website: normUrl(form.website.value),
-      revenue_band: form.revenue_band.value,
-      customer_band: form.customer_band.value,
-      current_process: form.current_process.value,
-      erp: form.erp.value.trim(),
       project: form.project.value.trim(),
       platform: "undecided",
       intent: "category",
       campaign: CFG.campaign || null,
       landing_page: LANDING,
       language: document.documentElement.lang || "es",
+      // Ask the API to send the prospect a confirmation. People who book through
+      // HubSpot get its invite; people who use this fallback form previously got
+      // nothing back at all.
+      confirm: true,
       attribution: T.attribution()
     };
-    var q = qualify(data);
-    data.qualification = q;
 
     function done() {
-      T.identify(email, { company: data.company, country: data.country, segment: q.segment });
-      // Segment goes to analytics so paid spend can be judged on qualified
-      // leads rather than raw form fills.
+      T.identify(email, { company: data.company });
       // Google Ads conversion: the signal the campaign bids on.
       T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
-      T.track("lead_submitted", {
-        intent: "category", landing_page: LANDING, country: data.country,
-        segment: q.segment, score: q.score, revenue_band: data.revenue_band
-      });
+      T.track("lead_submitted", { intent: "category", landing_page: LANDING, path: "form" });
       panelEl.style.display = "none";
       successEl.classList.add("show");
       successEl.scrollIntoView({ behavior: "smooth", block: "center" });

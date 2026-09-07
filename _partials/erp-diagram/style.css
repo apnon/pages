@@ -1,0 +1,135 @@
+/* ============================================================
+   ERP integration diagram — light panel, real vendor logos
+   White card on the soft section fill. ERP node on the left cycles
+   through real brand marks, commerce node on the right, two packet
+   tracks between them showing what syncs in each direction.
+   Logos are local files under assets/logos/ (no hotlinking, nothing
+   external to load). Aspect ratios differ wildly between brands, so
+   every mark sits in a fixed-height box with object-fit: contain.
+   ============================================================ */
+.erp-diagram {
+  display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 0; align-items: center;
+  margin-top: 46px; background: #fff; border: 1px solid var(--border-strong);
+  border-radius: 20px; padding: 38px 34px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.erp-diagram::before {
+  content: ""; position: absolute; top: -55%; left: 50%; transform: translateX(-50%);
+  width: 560px; height: 560px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(185,44,138,.07), transparent 70%); pointer-events: none;
+}
+.erp-node {
+  position: relative; background: var(--paper-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 18px; text-align: center; min-width: 0;
+}
+.erp-node .node-cap {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 15px;
+}
+.erp-node .node-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 15px; line-height: 1.5; }
+.erp-node.commerce .node-fixed { font-size: 20px; font-weight: 600; color: var(--navy); letter-spacing: -.02em; }
+.erp-node.commerce .node-fixed .hl2 { color: var(--magenta); }
+.erp-node.commerce .node-box {
+  height: 62px; display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px;
+}
+
+/* Rotating vendor logo */
+.erp-rotator {
+  position: relative; height: 62px;
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+}
+.erp-logo {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  padding: 13px 22px;
+  opacity: 0; transform: translateY(6px) scale(.98);
+  /* Base rule governs the fade OUT: kept short so the box is never visibly
+     empty between two marks. The .is-on rule below governs the fade IN. */
+  transition: opacity .18s ease, transform .18s ease;
+}
+.erp-logo.is-on { opacity: 1; transform: none; transition: opacity .34s ease, transform .34s ease; }
+.erp-logo img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; display: block; }
+/* "El tuyo" closer: a wordmark rather than a logo, styled to sit at the same weight. */
+.erp-logo .own {
+  font-size: 17px; font-weight: 600; color: var(--navy); letter-spacing: -.01em;
+}
+.erp-logo .own em { color: var(--magenta); font-style: normal; }
+
+/* No-JS and reduced-motion fallback: every logo at once, as a grid. */
+.erp-rotator.static {
+  height: auto; background: none; border: none;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.erp-rotator.static .erp-logo {
+  position: static; opacity: 1; transform: none; height: 48px; padding: 9px 12px;
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+}
+.erp-rotator.static .erp-logo .own { font-size: 12.5px; }
+
+/* Sync tracks */
+.erp-pipe { position: relative; padding: 0 24px; }
+.pipe-row { margin: 0 0 18px; }
+.pipe-row:last-child { margin-bottom: 0; }
+.pipe-cap {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ink-dim); text-align: center; margin-bottom: 9px;
+}
+.pipe-cap .ar { color: var(--magenta); font-weight: 600; }
+.pipe-track { position: relative; height: 2px; background: var(--border-strong); border-radius: 2px; }
+.pipe-track .pkt {
+  position: absolute; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+  background: var(--magenta); box-shadow: 0 0 0 3px rgba(185,44,138,.14);
+}
+.pipe-track.to-right .pkt { animation: pktR 3s linear infinite; }
+.pipe-track.to-left  .pkt { animation: pktL 3s linear infinite; }
+.pipe-track .pkt:nth-child(2) { animation-delay: 1s; }
+.pipe-track .pkt:nth-child(3) { animation-delay: 2s; }
+@keyframes pktR { 0% { left: -2%; opacity: 0 } 12% { opacity: 1 } 88% { opacity: 1 } 100% { left: 102%; opacity: 0 } }
+@keyframes pktL { 0% { left: 102%; opacity: 0 } 12% { opacity: 1 } 88% { opacity: 1 } 100% { left: -2%; opacity: 0 } }
+.pipe-items { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin-top: 9px; line-height: 1.5; }
+
+.erp-note {
+  max-width: 780px; margin: 26px auto 0; text-align: center;
+  font-size: 15px; color: var(--ink-soft); line-height: 1.7;
+}
+.erp-note strong { color: var(--navy); font-weight: 600; }
+.tm-note {
+  max-width: 780px; margin: 18px auto 0; text-align: center;
+  font-size: 11.5px; color: var(--ink-dim); line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .erp-diagram { grid-template-columns: 1fr; gap: 24px; padding: 26px 20px; }
+  .erp-pipe { padding: 0; }
+  .erp-rotator.static { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- Demoted demo block ---------------------------------------------------
+   The demo is an option, not the offer. One compact band, never a card grid. */
+.demo-aside {
+  max-width: 780px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto;
+  gap: 20px; align-items: center;
+  background: var(--paper-2); border: 1px solid var(--border);
+  border-left: 3px solid var(--magenta); border-radius: 14px; padding: 22px 26px;
+}
+.demo-aside .da-n {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--magenta);
+  background: var(--magenta-soft); border: 1px solid var(--magenta-line);
+  border-radius: 9px; padding: 9px 12px; white-space: nowrap;
+}
+.demo-aside h4 { font-size: 16px; margin-bottom: 5px; }
+.demo-aside p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.demo-aside .btn { white-space: nowrap; }
+@media (max-width: 760px) {
+  .demo-aside { grid-template-columns: 1fr; gap: 14px; text-align: left; }
+  .demo-aside .da-n { justify-self: start; }
+  .demo-aside .btn { width: 100%; }
+}
+
+/* Platform name chips (no flags, unlike .country-grid) */
+.plat-row { display: flex; flex-wrap: wrap; gap: 9px; justify-content: center; margin-top: 26px; }
+.plat-row .pc {
+  font-size: 14px; color: var(--navy); font-weight: 500; background: #fff;
+  border: 1px solid var(--border-strong); border-radius: 999px; padding: 8px 16px;
+}
+.plat-row .pc.more { color: var(--ink-soft); font-weight: 400; border-style: dashed; }

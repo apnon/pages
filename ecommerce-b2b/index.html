@@ -214,7 +214,7 @@
               tocar: se conecta por API, por archivos o por base de datos. Lo que sí importa es que la integración es la
               mitad grande del proyecto, y es la parte que más se subestima al estimar.</p>
           <span class="ob-a-call"><b>En la llamada</b>Dibujamos qué dato se mueve, hacia dónde y cada cuánto. Ese diagrama
-              es lo que después sostiene cualquier estimación seria. <a href="#erp">Mira cómo se ve</a>.</span>
+              es lo que después sostiene cualquier estimación seria.</span>
         </article>
         <article class="ob-answer" id="oba2" aria-labelledby="obb2">
           <span class="ob-a-tag">Presupuesto</span>
@@ -281,67 +281,6 @@
     </div>
   </section>
 
-  <!-- ERP integration: the objection everyone raises first -->
-  <section class="section" id="erp">
-    <div class="container">
-      <div class="sec-head center">
-        <span class="eyebrow center">La duda de la integración, en concreto</span>
-        <h2>Se conecta con el ERP que tengas</h2>
-        <p class="lead">Sí. Tu ERP ya tiene los productos, el stock y las condiciones de cada cliente. El ecommerce
-          no los reemplaza: los muestra y le devuelve los pedidos.</p>
-      </div>
-
-      <div class="erp-diagram">
-        <div class="erp-node">
-          <div class="node-cap">Tu ERP</div>
-          <div class="erp-rotator static" id="erpRotator">
-            <span class="erp-logo"><img src="assets/logos/sap.svg" alt="SAP" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/netsuite.png" alt="Oracle NetSuite" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/dynamics365.svg" alt="Microsoft Dynamics 365" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/acumatica.svg" alt="Acumatica" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/oracle.svg" alt="Oracle" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/sage.svg" alt="Sage" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/odoo.svg" alt="Odoo" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/softland.svg" alt="Softland" loading="lazy" /></span>
-            <span class="erp-logo"><img src="assets/logos/totvs.svg" alt="TOTVS" loading="lazy" /></span>
-            <span class="erp-logo"><span class="own">o <em>el tuyo</em></span></span>
-          </div>
-          <div class="node-sub">Defontana, Manager, o ese desarrollo interno de hace quince años que nadie quiere tocar</div>
-        </div>
-
-        <div class="erp-pipe">
-          <div class="pipe-row">
-            <div class="pipe-cap">Del ERP al ecommerce <span class="ar">&rarr;</span></div>
-            <div class="pipe-track to-right" aria-hidden="true">
-              <span class="pkt"></span><span class="pkt"></span><span class="pkt"></span>
-            </div>
-            <div class="pipe-items">productos · stock · listas de precios por cliente · estado de cuenta</div>
-          </div>
-          <div class="pipe-row">
-            <div class="pipe-cap"><span class="ar">&larr;</span> Del ecommerce al ERP</div>
-            <div class="pipe-track to-left" aria-hidden="true">
-              <span class="pkt"></span><span class="pkt"></span><span class="pkt"></span>
-            </div>
-            <div class="pipe-items">pedidos · cotizaciones · clientes nuevos · datos de entrega</div>
-          </div>
-        </div>
-
-        <div class="erp-node commerce">
-          <div class="node-cap">Tu ecommerce B2B</div>
-          <div class="node-box"><span class="node-fixed">Portal de <span class="hl2">pedidos</span></span></div>
-          <div class="node-sub">Tus clientes compran solos, con su precio, a cualquier hora</div>
-        </div>
-      </div>
-
-      <p class="erp-note">No integramos "un" ERP: integramos <strong>el que tengas</strong>. Por API, por archivos o
-        por el conector que ya exista. Cualquier presupuesto entregado antes de mirar tu ERP es una adivinanza.</p>
-
-      <p class="tm-note">Las marcas y logotipos mencionados pertenecen a sus respectivos propietarios y se muestran
-        únicamente para indicar compatibilidad de integración.</p>
-
-    </div>
-  </section>
-
   <!-- Who you actually talk to -->
   <section class="section bg-soft">
     <div class="container">
@@ -392,21 +331,31 @@
     </div>
   </section>
 
-  <!-- Lead form -->
+  <!-- Book / talk -->
   <section class="section" id="hablemos">
     <div class="container">
       <div class="sec-head center">
         <span class="eyebrow center">Agenda la llamada</span>
-        <h2>Cuéntanos cómo vendes hoy</h2>
-        <p class="lead">Con esto llegamos preparados y podemos entrar directo a tus dudas, en lugar de gastar media
-          hora en que nos expliques tu operación.</p>
+        <h2>Elige un horario y listo</h2>
+        <p class="lead">Treinta minutos con un especialista. Eliges el horario que te acomoda y te llega la
+          invitación al tiro. Sin formularios largos y sin que nadie te persiga después.</p>
       </div>
 
-      <div class="lead-panel" id="leadPanel">
-        <div class="lp-top">
-          <span class="lp-t">Una llamada, tus dudas, respuestas concretas</span>
-          <span class="lp-sla"><span class="pulse"></span> Respondemos dentro de un día hábil</span>
-        </div>
+      <!-- HubSpot booking: they pick a slot and HubSpot sends the invite itself,
+           which is also why there is no confirmation email to build here. -->
+      <div class="book-panel">
+        <div class="meetings-iframe-container"
+             data-src="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation?embed=true"></div>
+      </div>
+
+      <div class="book-alt">
+        <p class="ba-lead">¿Prefieres escribir primero?</p>
+        <button type="button" class="ba-toggle" id="altToggle" aria-expanded="false" aria-controls="altForm">
+          Déjanos tu correo y te respondemos
+        </button>
+      </div>
+
+      <div class="lead-panel alt-hidden" id="leadPanel">
         <div class="lp-body">
           <form id="leadForm" novalidate>
             <div class="field row-2">
@@ -422,88 +371,14 @@
               </div>
             </div>
 
-            <div class="field row-2">
-              <div class="field">
-                <label for="company">Empresa <span class="opt">(opcional)</span></label>
-                <input type="text" id="company" name="company" placeholder="Acme Industrial" autocomplete="organization" />
-              </div>
-              <div class="field">
-                <label for="role">Cargo <span class="opt">(opcional)</span></label>
-                <input type="text" id="role" name="role" placeholder="Gerente Comercial" autocomplete="organization-title" />
-              </div>
-            </div>
-
-            <div class="field row-2">
-              <div class="field">
-                <label for="country">País <span class="opt">(opcional)</span></label>
-                <select id="country" name="country">
-                  <option value="">Selecciona un país</option>
-                  <option>México</option><option>Colombia</option><option>Perú</option>
-                  <option>Chile</option><option>Argentina</option><option>Uruguay</option>
-                  <option>Ecuador</option><option>Bolivia</option><option>Paraguay</option>
-                  <option>Costa Rica</option><option>Guatemala</option><option>Panamá</option>
-                  <option>República Dominicana</option><option>Brasil</option>
-                  <option>Estados Unidos</option><option>España</option><option>Otro</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="website">Sitio web <span class="opt">(opcional)</span></label>
-                <input type="text" id="website" name="website" placeholder="www.tuempresa.com" />
-              </div>
-            </div>
-
-            <div class="qual-block">
-              <div class="qb-h">Tu operación</div>
-              <p class="qb-why">Cuatro preguntas para armar una demo que se parezca a tu realidad y llegar a la reunión
-                con algo útil que decirte.</p>
-
-              <div class="field row-2">
-                <div class="field">
-                  <label for="revenue_band">Facturación anual aproximada <span class="opt">(USD)</span></label>
-                  <select id="revenue_band" name="revenue_band">
-                    <option value="">Prefiero no decirlo</option>
-                    <option value="&lt;5M">Menos de 5 millones</option>
-                    <option value="5-10M">Entre 5 y 10 millones</option>
-                    <option value="10-50M">Entre 10 y 50 millones</option>
-                    <option value="50-200M">Entre 50 y 200 millones</option>
-                    <option value="&gt;200M">Más de 200 millones</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="customer_band">Clientes B2B activos</label>
-                  <select id="customer_band" name="customer_band">
-                    <option value="">Selecciona un rango</option>
-                    <option value="&lt;50">Menos de 50</option>
-                    <option value="50-200">Entre 50 y 200</option>
-                    <option value="200-1000">Entre 200 y 1.000</option>
-                    <option value="&gt;1000">Más de 1.000</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="field row-2">
-                <div class="field">
-                  <label for="current_process">¿Cómo reciben pedidos hoy?</label>
-                  <select id="current_process" name="current_process">
-                    <option value="">Selecciona una opción</option>
-                    <option value="email-excel">Correo, WhatsApp o planillas Excel</option>
-                    <option value="telefono">Por teléfono</option>
-                    <option value="vendedores">Vendedores en terreno</option>
-                    <option value="portal-antiguo">Un portal propio antiguo</option>
-                    <option value="ecommerce-actual">Ya tenemos un ecommerce B2B</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="erp_current">¿Qué ERP usan? <span class="opt">(opcional)</span></label>
-                  <input type="text" id="erp_current" name="erp" placeholder="SAP, NetSuite, Acumatica, Dynamics, Softland..." />
-                </div>
-              </div>
+            <div class="field">
+              <label for="company">Empresa <span class="opt">(opcional)</span></label>
+              <input type="text" id="company" name="company" placeholder="Acme Industrial" autocomplete="organization" />
             </div>
 
             <div class="field">
               <label for="project">¿Qué quieres resolver? <span class="opt">(opcional)</span></label>
-              <textarea id="project" name="project" placeholder="Por ejemplo: nuestros distribuidores piden por WhatsApp y perdemos pedidos, o queremos que los clientes vean su lista de precios y su estado de cuenta sin llamar al vendedor."></textarea>
+              <textarea id="project" name="project" placeholder="Por ejemplo: nuestros distribuidores piden por WhatsApp y perdemos pedidos."></textarea>
             </div>
 
             <div class="form-error" id="leadError">Ocurrió un problema. Inténtalo de nuevo en un momento.</div>
@@ -511,12 +386,11 @@
             <div class="wiz-foot">
               <span></span>
               <button type="button" class="btn btn-primary btn-lg" id="leadSend">
-                Agendar la llamada
+                Enviar
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </button>
             </div>
-            <p class="form-legal">Usamos tus datos solo para responderte y preparar tu demo. Sin newsletter, sin
-              secuencias, sin spam, y no compartimos tus datos con terceros.</p>
+            <p class="form-legal">Usamos tus datos solo para responderte. Sin newsletter, sin secuencias, sin spam.</p>
           </form>
         </div>
       </div>
@@ -525,9 +399,9 @@
         <div class="big-check">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
-        <h3>Listo. Estamos en eso.</h3>
-        <p>Te escribimos dentro de un día hábil para coordinar la llamada. Si quieres adelantar, responde ese correo
-          con tus dudas concretas, o con un Excel de tu catálogo si además quieres ver la demo.</p>
+        <h3>Listo. Gracias.</h3>
+        <p>Te acabamos de enviar un correo de confirmación y te respondemos dentro de un día hábil. Si prefieres
+          adelantar, puedes agendar directamente en el calendario de más arriba.</p>
       </div>
     </div>
   </section>
@@ -593,6 +467,7 @@
     </div>
   </footer>
 
+  <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
   <script src="config.js"></script>
   <script src="track.js"></script>
   <script src="lead.js"></script>

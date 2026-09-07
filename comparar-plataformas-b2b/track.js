@@ -46,6 +46,18 @@
     };
   }
 
+  /* Never let local development or a preview build touch production analytics.
+     I polluted the real GA4 property with localhost sessions twice by relying on
+     remembering to blank the keys; this makes it structural instead. */
+  var HOST = (location.hostname || "").toLowerCase();
+  if (HOST === "localhost" || HOST === "127.0.0.1" || HOST === "" || HOST === "::1") {
+    window.CampaignTrack = {
+      attribution: attribution, track: function () {}, identify: function () {},
+      conversion: function () {}
+    };
+    return;
+  }
+
   /* ---------- analytics providers ---------- */
   var ph = null;
   if (A.posthog && A.posthog.key) {
