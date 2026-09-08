@@ -21,85 +21,113 @@
   var MSG_NET = L.netError || "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.";
   var MSG_SENDING = L.sending || "Enviando…";
 
-  /* ---------- ERP rotator ----------
-     Cycles the vendor logo in the integration diagram. Every logo is already
-     in the DOM; this only moves the .is-on class. If the visitor asked for
-     reduced motion, or JS never runs, the rotator falls back to a static chip
-     grid showing all of them at once (CSS .static). */
+  /* ---------- platform picker ----------
+     The label carries the checked state as a class so the styling does not
+     depend on :has(), and each change is tracked: even someone who never
+     submits tells us which platforms are in play. */
+  function pickedPlatforms() {
+    return Array.prototype.map.call(
+      document.querySelectorAll('input[name="platforms"]:checked'),
+      function (el) { return el.value; });
+  }
+
   (function () {
-    var rot = document.getElementById("erpRotator");
-    if (!rot) return;
-    var names = rot.querySelectorAll(".erp-logo");
-    if (names.length < 2) return;
-
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { rot.classList.add("static"); return; }
-
-    rot.classList.remove("static");
-    var i = 0;
-    names[0].classList.add("is-on");
-    // Sequential swap, not a crossfade: these marks have wildly different
-    // widths (Oracle is a wide wordmark, TOTVS is a square), so two of them
-    // overlapping at partial opacity looks like a rendering fault. Fade the
-    // current one out first, then bring the next one in.
-    setInterval(function () {
-      names[i].classList.remove("is-on");
-      var next = (i + 1) % names.length;
-      setTimeout(function () {
-        names[next].classList.add("is-on");
-        i = next;
-      }, 200);
-    }, 2100);
+    var boxes = document.querySelectorAll('input[name="platforms"]');
+    if (!boxes.length) return;
+    Array.prototype.forEach.call(boxes, function (el) {
+      el.addEventListener("change", function () {
+        var item = el.closest(".pp-item");
+        if (item) item.classList.toggle("is-on", el.checked);
+        T.track("platform_picked", {
+          platform: el.value, checked: el.checked,
+          selection: pickedPlatforms(), landing_page: LANDING
+        });
+      });
+    });
   })();
 
-  /* ---------- silent qualification ----------
-     Scores sizing signals, not enthusiasm. Deliberately blunt: this only has
-     to be good enough to sort the inbox, the real call decides everything. */
-  var REVENUE_PTS = { "<5M": 0, "5-10M": 1, "10-50M": 2, "50-200M": 3, ">200M": 3, "": 0 };
-  var CUSTOMER_PTS = { "<50": 0, "50-200": 1, "200-1000": 2, ">1000": 2, "": 0 };
-  // Already running a portal or a storefront means a replatform, which is a
-  // real project with a real budget, not an exploratory conversation.
-  var CURRENT_PTS = { "portal-antiguo": 2, "ecommerce-actual": 2, "vendedores": 1, "email-excel": 1, "telefono": 1, "otro": 0, "": 0 };
+  /* ---------- booking (secondary path) ----------
+     Same shape as /ecommerce-b2b/: HubSpot is fetched when the visitor
+     approaches or reaches for the button, so the click does not land on an
+     empty box, and a skeleton covers whatever gap is left. */
+  (function () {
+    var open = document.getElementById("bookOpen");
+    var slot = document.getElementById("bookSlot");
+    var skel = document.getElementById("bookSkeleton");
+    var box = document.querySelector(".book-or");
+    if (!open || !slot) return;
 
-  function qualify(d) {
-    var hasErp = !!(d.erp && d.erp.trim() && !/^(no|ninguno|nada|n\/a)$/i.test(d.erp.trim()));
-    var score = (REVENUE_PTS[d.revenue_band] || 0)
-              + (CUSTOMER_PTS[d.customer_band] || 0)
-              + (CURRENT_PTS[d.current_process] || 0)
-              + (hasErp ? 1 : 0);
-
-    // Everything optional left blank means we know nothing, which is NOT the
-    // same as knowing they are small. Never let an unqualified lead be filed
-    // as a disqualified one.
-    if (!d.revenue_band && !d.customer_band && !d.current_process && !hasErp) {
-      return { score: score, segment: "unknown",
-               routing_hint: "No sizing data given. Qualify on the call before deciding anything." };
+    var requested = false;
+    function loadHubSpot() {
+      if (requested) return;
+      requested = true;
+      var s = document.createElement("script");
+      s.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+      s.async = true;
+      document.body.appendChild(s);
+      var host = slot.querySelector(".meetings-iframe-container");
+      if (!host || !skel) return;
+      var stop = setInterval(function () {
+        var f = host.querySelector("iframe");
+        if (!f) return;
+        // A hidden slot gives the iframe no layout, so height only means
+        // anything once the slot is visible.
+        var ready = slot.hidden ? true : f.getBoundingClientRect().height > 100;
+        if (ready) { skel.remove(); skel = null; clearInterval(stop); }
+      }, 150);
+      setTimeout(function () { clearInterval(stop); }, 20000);
     }
 
-    var segment, hint;
-    if (d.revenue_band === "<5M") {
-      // Alexandre's explicit rule: under the joint-campaign threshold, handle
-      // with a lighter solution. A stated number outranks the other signals.
-      segment = "smb";
-      hint = "Stated under USD 5M. Below the joint-campaign threshold, do not register with OroCommerce.";
-      if (score >= 3) hint += " Other signals are strong though (" + score + "/8), worth a look.";
-    } else if (score >= 5) {
-      segment = "enterprise";
-      hint = "Enterprise fit. Candidate to register with OroCommerce.";
-    } else if (score >= 3) {
-      segment = "mid-market";
-      // Keep platform names out of this file: it is served publicly and the
-      // page deliberately does not advertise alternatives to OroCommerce.
-      hint = "Mid-market. Confirm platform fit on the call, depending on integration depth.";
+    if ("IntersectionObserver" in window && box) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { loadHubSpot(); io.disconnect(); }
+        });
+      }, { rootMargin: "600px 0px" });
+      io.observe(box);
     } else {
-      segment = "smb";
-      hint = "Below the joint-campaign threshold. Handle with a lighter solution, do not register.";
+      loadHubSpot();
     }
+    open.addEventListener("mouseenter", loadHubSpot);
+    open.addEventListener("focus", loadHubSpot);
 
-    if (!d.revenue_band) hint += " Revenue not disclosed, confirm on the call.";
+    open.addEventListener("click", function () {
+      loadHubSpot();
+      if (!slot.hidden) {
+        slot.hidden = true;
+        open.setAttribute("aria-expanded", "false");
+        return;
+      }
+      slot.hidden = false;
+      open.setAttribute("aria-expanded", "true");
+      T.track("booking_opened", { landing_page: LANDING, platforms: pickedPlatforms() });
+      if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
-    return { score: score, segment: segment, routing_hint: hint };
-  }
+    var direct = document.getElementById("bookDirect");
+    if (direct) direct.addEventListener("click", function () {
+      T.track("booking_opened", { landing_page: LANDING, path: "new_tab" });
+    });
+  })();
+
+  /* ---------- a booked meeting is a conversion too ----------
+     Worth more than a form fill, so it has to reach Google Ads as the same
+     conversion or bidding only ever learns from the weaker path. */
+  (function () {
+    window.addEventListener("message", function (e) {
+      if (!e || !e.data) return;
+      var d = e.data;
+      var booked = d.meetingBookSucceeded === true ||
+                   (typeof d === "object" && d.meetingsPayload &&
+                    d.meetingsPayload.meetingBookSucceeded === true);
+      if (!booked) return;
+      T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
+      T.track("lead_submitted", {
+        intent: "comparison", landing_page: LANDING, path: "hubspot_booking",
+        platforms: pickedPlatforms()
+      });
+    }, false);
+  })();
 
   /* ---------- form ---------- */
   var form = document.getElementById("leadForm");
@@ -156,33 +184,29 @@
       fullname: form.fullname.value.trim(),
       email: email,
       company: form.company.value.trim(),
-      role: form.role.value.trim(),
-      country: form.country.value,
-      website: normUrl(form.website.value),
-      revenue_band: form.revenue_band.value,
-      customer_band: form.customer_band.value,
-      current_process: form.current_process.value,
-      erp: form.erp.value.trim(),
+      // What they are weighing us against. More useful than a score we invent:
+      // it says which platforms we actually compete with, per campaign and per
+      // keyword, and it decides which environments are worth building.
+      platforms: pickedPlatforms(),
       project: form.project.value.trim(),
       platform: "undecided",
-      intent: "category",
+      intent: "comparison",
       campaign: CFG.campaign || null,
       landing_page: LANDING,
       language: document.documentElement.lang || "es",
+      confirm: true,
       attribution: T.attribution()
     };
-    var q = qualify(data);
-    data.qualification = q;
 
     function done() {
-      T.identify(email, { company: data.company, country: data.country, segment: q.segment });
+      T.identify(email, { company: data.company });
       // Segment goes to analytics so paid spend can be judged on qualified
       // leads rather than raw form fills.
       // Google Ads conversion: the signal the campaign bids on.
       T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
       T.track("lead_submitted", {
-        intent: "category", landing_page: LANDING, country: data.country,
-        segment: q.segment, score: q.score, revenue_band: data.revenue_band
+        intent: "comparison", landing_page: LANDING, path: "form",
+        platforms: data.platforms, platform_count: data.platforms.length
       });
       panelEl.style.display = "none";
       successEl.classList.add("show");
