@@ -870,3 +870,52 @@ a:focus-visible, .btn:focus-visible, .copy-btn:focus-visible, input:focus-visibl
    390px viewport (377px button in a 342px content box). Let it wrap instead
    of shortening the label, which reads better than a truncated CTA. */
 .book-or .btn { max-width: 100%; white-space: normal; text-align: center; }
+
+/* ============================================================
+   Form-first variant (/comparar-plataformas-b2b-b/ only).
+   The platform picker is the hero, so the panel sits directly under a short,
+   centered head instead of 400px further down the page.
+   ============================================================ */
+.ff-hero { padding: 40px 0 72px; background: var(--paper-2); border-bottom: 1px solid var(--border); }
+.ff-head { max-width: 780px; margin: 0 auto; text-align: center; }
+.ff-head .eyebrow { justify-content: center; }
+.ff-head h1 { font-size: 44px; margin-bottom: 14px; }
+.ff-head .hero-sub { margin: 0 auto; max-width: 620px; }
+.lead-panel.ff-panel { max-width: 780px; margin: 30px auto 0; scroll-margin-top: 84px; } /* clears the sticky header on step change */
+.ff-panel .lp-top { padding-top: 16px; padding-bottom: 16px; }
+
+.ff-stepno { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .04em; color: var(--ink-dim); }
+
+/* The picker is required here (it is the whole point of step 1), so its error
+   sits under the grid rather than under an input. */
+.plat-pick.invalid .pp-item { border-color: #e6a3a3; }
+.plat-pick .err { margin-top: 10px; }
+
+/* Step 2 recap of what they picked, with a way back. */
+.ff-picked { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; background: var(--paper-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 20px; }
+.ff-picked .fp-l { font-size: 13px; color: var(--ink-soft); }
+.ff-picked .fp-chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
+.ff-chip { white-space: nowrap; font-size: 12.5px; color: var(--navy); background: #fff; border: 1px solid var(--magenta-line); border-radius: 999px; padding: 3px 10px; }
+.ff-edit { font-family: var(--font-base); font-size: 13px; color: var(--magenta); background: none; border: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 2px 0; }
+
+.ff-hero .wiz-success { max-width: 780px; margin: 30px auto 0; background: #fff; border: 1px solid var(--border-strong); border-radius: 20px; padding: 34px 24px 30px; }
+.ff-hero .proof-strip { max-width: 780px; margin: 34px auto 0; }
+.tm-note { font-size: 12px; color: var(--ink-dim); line-height: 1.55; }
+.ff-hero .tm-note { max-width: 780px; margin: 14px auto 0; text-align: center; }
+
+@media (max-width: 900px) {
+  .ff-head h1 { font-size: 34px; }
+}
+@media (max-width: 560px) {
+  .ff-hero { padding: 28px 0 52px; }
+  .ff-head h1 { font-size: 28px; }
+  .ff-head .hero-sub { font-size: 16px; }
+  .ff-head .eyebrow { display: none; } /* wraps to two lines and pushes the picker below the fold */
+  .ff-panel .wiz-foot { flex-direction: column-reverse; align-items: stretch; }
+  .ff-panel .wiz-foot .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; }
+  .ff-panel .wiz-foot .ff-stepno { text-align: center; }
+  .lead-panel.ff-panel .lp-top .lp-sla { display: none; }
+  /* Recap: label and "Cambiar" on one line, chips on the next. */
+  .ff-picked .fp-chips { order: 2; flex-basis: 100%; }
+  .ff-picked .ff-edit { order: 1; margin-left: auto; }
+}

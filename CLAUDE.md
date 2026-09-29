@@ -314,3 +314,32 @@ sent to analytics.
 
 The prospect never sees any of this: no score, no "you are too small", no platform
 recommendation on the page. That conversation happens on the call.
+
+### `/comparar-plataformas-b2b-b/`: form-first variant (Sept 2026)
+
+Same offer as `/comparar-plataformas-b2b/`, built for paid traffic from the platform-name
+campaign ("B2B - Plataformas LATAM (ES)"). `noindex,follow`, canonical to variant A, not in
+the sitemap.
+
+- **The platform picker is the hero.** Step 1 is the picker plus "Algo más que debamos
+  saber?", step 2 is name and work email only. The picker is required here (at least
+  one box, "Todavía no lo sé" counts), because the selection is the point of step 1.
+- **Work email only, no company field.** The email domain stands in for the company and
+  is sent as `email_domain`. `lead.js` refuses free and throwaway mailboxes, including
+  LatAm variants (hotmail.com.ar, yahoo.com.mx, terra.com.br), but a provider name only
+  counts as the mailbox itself: `live.acme.com` passes. Client-side only, the API accepts
+  anything. Each refusal fires `personal_email_rejected` with the provider, never the
+  address, so the cost of the filter can be measured. The HubSpot booking path is not
+  filtered.
+- **Step 1 is stored even if step 2 never happens.** "Siguiente" calls `POST /save` with
+  `step: 1` and no `notify`/`confirm`, so nobody is emailed. Step 2 resends the whole
+  record with the same `session_token` plus `notify: true` and `confirm: true`: one visitor,
+  one row. Abandoned selections are the rows with `current_step = 1` and no email, filtered
+  on `data.campaign = "latam-comparar-plataformas-b"`.
+- **Analytics:** `platforms_submitted` on step 1 and `lead_submitted` on step 2, both with
+  `variant: "b"` and a `platforms_csv` string (GA4 handles array params badly). The Ads
+  conversion fires on step 2 or a HubSpot booking only, same label as variant A.
+- **HubSpot is not prefetched.** The booking button sits in the hero, so variant A's
+  scroll-proximity prefetch would load the embed for every visitor. Here it loads on
+  hover/focus/touch of the button or when the visitor reaches step 2.
+- `style.css` is variant A's stylesheet plus a "Form-first variant" block at the end.
