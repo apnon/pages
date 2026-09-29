@@ -182,6 +182,11 @@
   var MSG_EMAIL_PERSONAL = "Usa el correo de tu empresa. No aceptamos Gmail, Hotmail, Outlook ni otros correos personales.";
 
   // Returns true when the email passes, and shows the right message when not.
+  // The rejection is reported on blur as well as on send: the message appears
+  // on blur and pushes the button down, so a click already under way misses
+  // it and the send handler never runs. Once per provider, so blur plus send
+  // count one rejection, not two.
+  var reportedProviders = {};
   function checkEmail(reportRejection) {
     var f = form.querySelector('.field[data-validate="email"]');
     var msg = document.getElementById("emailErr");
@@ -192,9 +197,11 @@
       bad = MSG_EMAIL_PERSONAL;
       // Only the provider, never the address: tells us how many leads this
       // filter turns away, and whether it is worth its cost.
-      if (reportRejection) T.track("personal_email_rejected", {
-        landing_page: LANDING, variant: VARIANT, provider: emailDomain(v)
-      });
+      var provider = emailDomain(v);
+      if (reportRejection && !reportedProviders[provider]) {
+        reportedProviders[provider] = true;
+        T.track("personal_email_rejected", { landing_page: LANDING, variant: VARIANT, provider: provider });
+      }
     }
     if (bad) { msg.textContent = bad; f.classList.add("invalid"); return false; }
     f.classList.remove("invalid");
@@ -324,7 +331,7 @@
 
   // Say it on leaving the field, not only after they press send.
   form.email.addEventListener("blur", function () {
-    if (form.email.value.trim()) checkEmail(false);
+    if (form.email.value.trim()) checkEmail(true);
   });
   form.email.addEventListener("input", function () {
     var f = form.querySelector('.field[data-validate="email"]');
