@@ -343,3 +343,30 @@ the sitemap.
   scroll-proximity prefetch would load the embed for every visitor. Here it loads on
   hover/focus/touch of the button or when the visitor reaches step 2.
 - `style.css` is variant A's stylesheet plus a "Form-first variant" block at the end.
+
+### `/ecommerce-b2b-b/`: form-first variant (Oct 2026)
+
+Same offer as `/ecommerce-b2b/`, built for paid traffic from "B2B - Ecommerce LATAM (ES)".
+Variant A took 289 paid clicks between 7 Sept and 1 Oct 2026 and produced one booking, with
+almost nobody opening the calendar. `noindex,follow`, canonical to variant A, not in the
+sitemap. Same mechanics as `/comparar-plataformas-b2b-b/` (step 1 saved without notifying
+anyone, step 2 is name and work email, HubSpot loaded on demand), with these differences:
+
+- **The doubt picker is the hero.** Ten checkboxes under "Qué dudas quieres resolver?":
+  the six doubts from the bubble section in short form, plus "Qué plataforma elegir",
+  "Mi proyecto actual va mal", "Recién estoy explorando" and "Otra duda". At least one is
+  required. It reuses the `.plat-pick` / `.pp-*` classes with a `.pp-doubts` modifier: two
+  columns, one column at 480px and below.
+- **Still names no commerce platform.** "Qué plataforma elegir" is a doubt, not a roster.
+- **`doubts` is not in the alert email.** The API prints a fixed list of fields, so
+  `lead.js` also writes the selection into `project` ("Dudas: Precios, Integración ERP."
+  followed by the visitor's note), which the email shows as "What they want to solve". The
+  untouched note is sent as `notes`. If the API ever learns `doubts`, drop that prefix.
+- **Analytics:** `doubt_picked` per checkbox, `doubts_submitted` on step 1 and
+  `lead_submitted` on step 2, with `variant: "b"` and a `doubts_csv` string. Rows are
+  filtered on `data.campaign = "latam-ecommerce-b2b-b"`.
+- The hero screenshot, the photo booking card and the bottom booking section of variant A
+  are gone: the form replaces them, and booking is the secondary button under it.
+- `style.css` is variant A's stylesheet, untouched, plus one block at the end. That block
+  also carries the `.demo-aside` rules, which variant A's own stylesheet is missing (its
+  "Opcional" band renders unstyled).

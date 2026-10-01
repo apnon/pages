@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecommerce B2B para Fabricantes y Distribuidores | Qué te Preocupa? | Synolia</title>
+  <meta name="description"
+    content="Marca las dudas que frenan tu proyecto de ecommerce B2B: precios por contrato, integración con tu ERP, costo real, equipo de ventas, adopción de tus clientes. Un especialista te responde dentro de un día hábil. Sin costo y sin discurso comercial." />
+  <!-- Variant B of /ecommerce-b2b/, for paid traffic only. -->
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href="https://us.synolia.com/ecommerce-b2b" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header>
+    <div class="container header-inner">
+      <div class="brand-row">
+        <a href="https://www.synolia.com" class="logo" aria-label="Synolia"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+        <span class="neutral-badge">Ecommerce B2B · desde 2004</span>
+      </div>
+      <a href="#hablemos" class="btn btn-ghost header-cta">Marcar mis dudas</a>
+    </div>
+  </header>
+
+  <!-- The form is the hero. Ticking a doubt is easier than reading a page and
+       then deciding to book a call, and it tells us what stops people. -->
+  <section class="hero ff-hero" id="hablemos">
+    <div class="container">
+      <div class="ff-head">
+        <span class="eyebrow center">Ecommerce B2B · Fabricantes y distribuidores</span>
+        <h1>Ecommerce B2B: <span class="hl">qué es lo que más te preocupa?</span></h1>
+        <p class="hero-sub">Márcalo. Te responde alguien que implementa estos proyectos para fabricantes y
+          distribuidores, sobre tu caso y dentro de un día hábil. Sin costo y sin discurso comercial.</p>
+      </div>
+
+      <div class="lead-panel ff-panel" id="leadPanel">
+        <div class="lp-top">
+          <div class="wiz-steps" aria-hidden="true">
+            <div class="wiz-dot active" data-dot="1"><span class="b">1</span><span class="lbl-txt">Tus dudas</span></div>
+            <div class="wiz-sep"></div>
+            <div class="wiz-dot" data-dot="2"><span class="b">2</span><span class="lbl-txt">Tus datos</span></div>
+          </div>
+          <span class="lp-sla"><span class="pulse"></span> Respondemos dentro de un día hábil</span>
+        </div>
+        <div class="lp-body">
+          <form id="leadForm" novalidate>
+
+            <!-- Step 1: what stops them. Saved on "Siguiente", before any
+                 contact detail, so the selection counts even if step 2 is
+                 never sent. -->
+            <div class="wiz-step active" data-step="1">
+              <div class="field plat-pick" id="doubtField">
+                <label id="doubtLabel">Qué dudas quieres resolver?</label>
+                <p class="pp-help">Marca todas las que apliquen. Así llegamos a la conversación con tu caso preparado y
+                  no con una presentación.</p>
+                <div class="pp-grid pp-doubts" role="group" aria-labelledby="doubtLabel">
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="precios" data-tag="Precios" /><span>Mis precios son un caos</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="erp" data-tag="Integración ERP" /><span>Mi ERP es difícil de conectar</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="costo" data-tag="Costo real" /><span>Cuánto cuesta de verdad</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="ventas" data-tag="Equipo de ventas" /><span>Mi equipo de ventas se va a oponer</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="adopcion" data-tag="Adopción" /><span>Mis clientes no lo van a usar</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="whatsapp" data-tag="WhatsApp" /><span>Ya me compran por WhatsApp</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="plataforma" data-tag="Qué plataforma" /><span>Qué plataforma elegir</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="rescate" data-tag="Proyecto en marcha" /><span>Mi proyecto actual va mal</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="explorando" data-tag="Explorando" /><span>Recién estoy explorando</span></label>
+                  <label class="pp-item"><input type="checkbox" name="doubts" value="otra" data-tag="Otra duda" /><span>Otra duda</span></label>
+                </div>
+                <div class="err" id="doubtErr">Marca al menos una. Si todavía no tienes una duda concreta, marca "Recién estoy explorando".</div>
+              </div>
+
+              <div class="field">
+                <label for="project">Algo más que debamos saber? <span class="opt">(opcional)</span></label>
+                <textarea id="project" name="project" placeholder="Por ejemplo: nuestros distribuidores piden por WhatsApp y perdemos pedidos."></textarea>
+              </div>
+
+              <div class="wiz-foot">
+                <span class="ff-stepno">Paso 1 de 2</span>
+                <button type="button" class="btn btn-primary btn-lg" id="stepNext">
+                  Siguiente: tus datos
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: who they are. Only this step notifies us, emails the
+                 prospect and fires the Ads conversion. -->
+            <div class="wiz-step" data-step="2">
+              <div class="ff-picked" id="pickedSummary">
+                <span class="fp-l">Quieres resolver:</span>
+                <span class="fp-chips" id="pickedChips"></span>
+                <button type="button" class="ff-edit" id="pickedEdit">Cambiar</button>
+              </div>
+
+              <div class="field row-2">
+                <div class="field" data-validate="text">
+                  <label for="fullname">Tu nombre <span class="req">*</span></label>
+                  <input type="text" id="fullname" name="fullname" placeholder="Juana Pérez" autocomplete="name" />
+                  <div class="err">Ingresa tu nombre.</div>
+                </div>
+                <div class="field" data-validate="email">
+                  <label for="email">Correo de trabajo <span class="req">*</span></label>
+                  <input type="email" id="email" name="email" placeholder="juana@tuempresa.com" autocomplete="email" />
+                  <div class="err" id="emailErr">Ingresa un correo de trabajo válido.</div>
+                </div>
+              </div>
+
+              <div class="form-error" id="leadError">Ocurrió un problema. Inténtalo de nuevo en un momento.</div>
+
+              <div class="wiz-foot">
+                <button type="button" class="wiz-skip" id="stepBack">Volver</button>
+                <button type="button" class="btn btn-primary btn-lg" id="leadSend">
+                  Enviar mis dudas
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+              <p class="form-legal">Usamos tus datos solo para responderte. Sin newsletter, sin secuencias, sin spam, y
+                no compartimos tus datos con terceros.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="wiz-success" id="leadSuccess">
+        <div class="big-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h3>Listo. Gracias.</h3>
+        <p>Te acabamos de enviar un correo de confirmación. Te respondemos dentro de un día hábil sobre lo que marcaste
+          y coordinamos la llamada. Si prefieres adelantar, agenda directamente aquí abajo.</p>
+      </div>
+
+      <!-- Secondary path, for people who would rather talk than write. The
+           scheduler is loaded only when they reach for it. -->
+      <div class="book-or">
+        <p class="bo-lead">Prefieres hablar directamente?</p>
+        <button type="button" class="btn btn-ghost" id="bookOpen" aria-expanded="false" aria-controls="bookSlot">
+          Agenda 30 minutos con un especialista
+        </button>
+      </div>
+
+      <div class="book-slot" id="bookSlot" hidden>
+        <div class="book-skeleton" id="bookSkeleton" aria-live="polite">
+          <div class="bs-bar"></div>
+          <p class="bs-msg">Cargando el calendario…</p>
+          <p class="bs-alt">Se demora? <a href="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation" target="_blank" rel="noopener" id="bookDirect">Ábrelo en una pestaña nueva</a></p>
+        </div>
+        <div class="meetings-iframe-container" data-src="https://meetings.hubspot.com/alexandre-perrachon/b2b-ecommerce-free-consultation?embed=true"></div>
+      </div>
+
+      <div class="proof-strip">
+        <div class="ps"><div class="ps-n">2004</div><div class="ps-l">Construyendo comercio B2B desde</div></div>
+        <div class="ps"><div class="ps-n">1</div><div class="ps-l">Llamada para salir con respuestas, no con una propuesta</div></div>
+        <div class="ps"><div class="ps-n">$0</div><div class="ps-l">Sin costo y sin compromiso</div></div>
+        <div class="ps"><div class="ps-n ps-sm">ES·EN·FR</div><div class="ps-l">Idiomas de proyecto y soporte</div></div>
+      </div>
+
+      <p class="tm-note">Synolia es un integrador de ecommerce B2B para fabricantes y distribuidores en Latinoamérica,
+        con equipo en Santiago de Chile. No somos fabricantes de software: no tenemos una licencia propia que
+        colocarte.</p>
+    </div>
+  </section>
+
+  <!-- The doubts: a room of objections you can poke at -->
+  <section class="section bg-soft" id="dudas">
+    <div class="container-wide">
+      <div class="sec-head center">
+        <span class="eyebrow center">Sin rodeos</span>
+        <h2>Esto es lo que nos dicen en la primera llamada</h2>
+        <p class="lead">Textual. Ninguna de estas se resuelve del todo leyendo una página web, pero sí podemos decirte
+          ahora mismo qué pensamos de cada una. <span class="ob-hint">Toca la que sea tuya.</span></p>
+      </div>
+
+      <div class="ob-stage" id="obStage">
+        <span class="ob-blob b1" aria-hidden="true"></span>
+        <span class="ob-blob b2" aria-hidden="true"></span>
+        <button class="ob-bubble f0" type="button" id="obb0" aria-controls="oba0"
+          style="--x:1.5%; --y:4%; --s:1.02; --rot:-2.0deg; --d:0.0s;">
+          <span class="ob-tag">Precios</span>
+          <span class="ob-quote">"Mi estructura de precios es un caos"</span>
+        </button>
+        <button class="ob-bubble f1" type="button" id="obb1" aria-controls="oba1"
+          style="--x:31%; --y:15%; --s:0.93; --rot:1.6deg; --d:-1.7s;">
+          <span class="ob-tag">Integración</span>
+          <span class="ob-quote">"Mi ERP es imposible de conectar"</span>
+        </button>
+        <button class="ob-bubble f2" type="button" id="obb2" aria-controls="oba2"
+          style="--x:64%; --y:1%; --s:1.06; --rot:-1.0deg; --d:-3.4s;">
+          <span class="ob-tag">Presupuesto</span>
+          <span class="ob-quote">"Nadie me dice cuánto cuesta de verdad"</span>
+        </button>
+        <button class="ob-bubble f1" type="button" id="obb3" aria-controls="oba3"
+          style="--x:5%; --y:55%; --s:0.91; --rot:2.2deg; --d:-5.1s;">
+          <span class="ob-tag">Equipo</span>
+          <span class="ob-quote">"Mi equipo de ventas se va a oponer"</span>
+        </button>
+        <button class="ob-bubble f2" type="button" id="obb4" aria-controls="oba4"
+          style="--x:34%; --y:63%; --s:1.0; --rot:-1.6deg; --d:-6.8s;">
+          <span class="ob-tag">Adopción</span>
+          <span class="ob-quote">"Mis clientes no lo van a usar"</span>
+        </button>
+        <button class="ob-bubble f0" type="button" id="obb5" aria-controls="oba5"
+          style="--x:69%; --y:50%; --s:0.96; --rot:1.1deg; --d:-8.5s;">
+          <span class="ob-tag">Retorno</span>
+          <span class="ob-quote">"Mis clientes ya me compran por WhatsApp"</span>
+        </button>
+      </div>
+
+      <div class="ob-answers" id="obAnswers">
+        <article class="ob-answer" id="oba0" aria-labelledby="obb0">
+          <span class="ob-a-tag">Precios</span>
+          <h3 class="ob-a-title">"Mi estructura de precios es un caos"</h3>
+          <p>Es la primera pregunta de casi todos y la que más proyectos hunde. Un precio B2B depende de quién compra,
+              con qué contrato, en qué cantidad, por qué canal y en qué país. Cuando el portal muestra el precio de
+              lista en lugar del precio negociado, el cliente vuelve al correo ese mismo día y ya no regresa. Y acá las
+              plataformas no son equivalentes: lo que una resuelve con configuración, otra lo pide como desarrollo a
+              medida.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Trae tus reglas, incluidas las que te dan vergüenza, más o menos
+              cuántos clientes y cuántos productos manejas. Con eso te decimos lo que ningún comparativo te va a dar:
+              qué plataformas resuelven tu modelo de precios de forma nativa, cuáles lo hacen a costa de desarrollo a
+              medida, y cuáles directamente no dan para tu caso. Esa diferencia sola suele decidir el proyecto.</span>
+        </article>
+        <article class="ob-answer" id="oba1" aria-labelledby="obb1">
+          <span class="ob-a-tag">Integración</span>
+          <h3 class="ob-a-title">"Mi ERP es imposible de conectar"</h3>
+          <p>Da lo mismo si es SAP, NetSuite, Acumatica, Dynamics, Softland o un desarrollo interno que nadie quiere
+              tocar: se conecta por API, por archivos o por base de datos. Lo que sí importa es que la integración es la
+              mitad grande del proyecto, y es la parte que más se subestima al estimar.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Dibujamos qué dato se mueve, hacia dónde y cada cuánto. Ese diagrama
+              es lo que después sostiene cualquier estimación seria.</span>
+        </article>
+        <article class="ob-answer" id="oba2" aria-labelledby="obb2">
+          <span class="ob-a-tag">Presupuesto</span>
+          <h3 class="ob-a-title">"Nadie me dice cuánto cuesta de verdad"</h3>
+          <p>No publicamos un rango porque sería inútil: el mismo alcance puede costar tres veces más o menos según
+              el estado de tus datos y la cantidad de reglas de precios que tengas realmente. Lo que sí sabemos es que
+              la licencia es la parte visible y la más citada, y que integración, migración y desarrollo suelen pesar
+              bastante más que ella.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Te damos un rango para tu caso concreto y, más útil todavía, te
+              decimos qué es lo que lo empuja hacia arriba. Sin sorpresas en la propuesta. Si además estás
+              <a href="/comparar-plataformas-b2b/">comparando plataformas</a>, podemos montarlas con tu catálogo.</span>
+        </article>
+        <article class="ob-answer" id="oba3" aria-labelledby="obb3">
+          <span class="ob-a-tag">Equipo</span>
+          <h3 class="ob-a-title">"Mi equipo de ventas se va a oponer"</h3>
+          <p>Probablemente sí, y hunde más proyectos que cualquier problema técnico. El vendedor ve el portal como
+              una amenaza a su comisión y a su relación con el cliente. Si eso no se resuelve antes de salir a
+              producción, el equipo comercial le dice a sus clientes que sigan pidiendo por WhatsApp y el portal queda
+              vacío mientras todos se preguntan por qué.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Cómo hemos visto que se resuelve: qué hacer con las comisiones, qué
+              darle al vendedor dentro del portal y por qué esto funciona cuando el equipo comercial gana con el
+              portal en vez de competir contra él.</span>
+        </article>
+        <article class="ob-answer" id="oba4" aria-labelledby="obb4">
+          <span class="ob-a-tag">Adopción</span>
+          <h3 class="ob-a-title">"Mis clientes no lo van a usar"</h3>
+          <p>Tus clientes recurrentes no entran a navegar, entran a reponer. Si reponer les toma más pasos que
+              mandarte un correo, no vuelven. La adopción no se gana con diseño: se gana con el precio correcto a la
+              vista, pedido rápido, historial y estado de cuenta.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Qué mueve la adopción real en operaciones parecidas a la tuya, cómo
+              se acompaña a los clientes las primeras semanas y qué medir para saber si está funcionando antes de que
+              sea tarde.</span>
+        </article>
+        <article class="ob-answer" id="oba5" aria-labelledby="obb5">
+          <span class="ob-a-tag">Retorno</span>
+          <h3 class="ob-a-title">"Mis clientes ya me compran por WhatsApp"</h3>
+          <p>Porque el retorno más grande no está en vender más, aunque normalmente también pase. Está en el tiempo
+              que le devuelves a tu propio equipo. Hoy alguien en tu empresa transcribe pedidos que llegan por correo y
+              por WhatsApp, responde diez veces al día "cuál es mi precio de este producto?", revisa si hay stock,
+              reenvía facturas y corrige los errores de tipeo que se cuelan en el camino. Son horas de gente cara
+              haciendo consultas que el sistema puede responder solo.</p>
+          <span class="ob-a-call"><b>En la llamada</b>Cómo dimensionarlo con tus propios números: pedidos al mes por el
+              tiempo que toma cada uno, y cuántas consultas de precio y de stock atiende tu equipo al día. Con eso el
+              caso interno se arma solo. Y lo que casi nadie anticipa: cuando esa conversación de bajo valor
+              desaparece, dejan de llamarse por cosas chicas en las dos direcciones y la relación sube de nivel. Tus
+              vendedores dejan de tomar dictado y pasan a lo que sí necesita una persona, que es vender más, abrir
+              cuentas y resolver lo que de verdad importa. Es la razón por la que el portal termina gustándole incluso
+              al equipo que al principio se resistía.</span>
+        </article>
+      </div>
+
+      <div class="neutral-note" style="margin-top:34px;">
+        <p><strong>Y si tu duda no está acá?</strong> Mejor todavía, porque significa que es específica de tu
+          operación. Márcala como "Otra duda" y cuéntanosla. No hay presentación, y no hay propuesta al final salvo
+          que tú la pidas.</p>
+      </div>
+
+      <div class="anchor-cta">
+        <a href="#hablemos" class="btn btn-primary btn-lg">
+          Marcar mis dudas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who you actually talk to -->
+  <section class="section">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">Con quién hablas</span>
+        <h2>No hay un vendedor entre medio</h2>
+        <p class="lead">Te responde alguien que ha implementado estos proyectos. Mira tus reglas de precios y te dice
+          cuáles son un problema, y por qué. No hay guion, no hay presentación de la empresa, y nadie tiene que
+          consultar internamente para responderte.</p>
+      </div>
+
+      <div class="cap-grid">
+        <div class="cap-card">
+          <span class="cap-tag">Franqueza</span>
+          <h4>Si no somos la mejor opción, te lo decimos ahí</h4>
+          <p>A veces la respuesta correcta es otra plataforma, un portal más simple sobre tu ERP, o esperar un año y
+            ordenar los datos primero. Preferimos perder un proyecto antes que entregar uno que no debió empezar.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag">Independencia</span>
+          <h4>No somos fabricantes de software</h4>
+          <p>Somos integradores. No tenemos una licencia propia que colocarte ni una cuota que cumplir con nadie, así
+            que la conversación empieza por tu operación y no por un producto.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag">Sin secuencia</span>
+          <h4>Una respuesta es una respuesta</h4>
+          <p>No entras a una secuencia de correos ni te llama un comercial la semana siguiente. Si quieres seguir, nos
+            escribes tú. Así de simple.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo, demoted to an option -->
+  <section class="section tight">
+    <div class="container">
+      <div class="demo-aside">
+        <div class="da-n">Opcional</div>
+        <div>
+          <h4>Y si además quieres verlo con tus productos?</h4>
+          <p>Danos tu catálogo, aunque sea un Excel, y en 24 horas armamos una tienda B2B funcionando con tus productos
+            y tus precios, para recorrerla en una segunda conversación. Sin costo. Puedes pedirlo en el formulario o
+            decidirlo después de la primera llamada.</p>
+        </div>
+        <a href="#hablemos" class="btn btn-outline">Lo quiero</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="sec-head center">
+        <span class="eyebrow center">Preguntas frecuentes</span>
+        <h2>Sobre la llamada</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3 class="faq-q">La llamada es realmente gratis?</h3>
+          <p class="faq-a">Sí. Sin tarjeta, sin "prueba gratuita" con truco. Es tiempo de un especialista y no te cuesta nada. Lo hacemos porque una parte de la gente con la que hablamos termina trabajando con nosotros, y porque la que no, muchas veces nos manda a alguien más.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Me van a intentar vender algo?</h3>
+          <p class="faq-a">Con transparencia total: Synolia implementa proyectos de ecommerce B2B, así que obviamente nos interesa. Ahora que lo sabes, tú decides si quieres saber más. No entras a una secuencia de correos ni te llama un comercial la semana siguiente. La llamada es para ayudarte a decidir, no para cerrarte.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Estoy explorando, todavía no tengo el proyecto aprobado. Sirve igual?</h3>
+          <p class="faq-a">Es el mejor momento para tener esta conversación, antes de tomar decisiones caras de revertir. Buena parte de lo que hablamos sirve justamente para armar el caso interno.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Ya tengo un proveedor o una plataforma en mente. Sirve igual?</h3>
+          <p class="faq-a">Sí, y probablemente más. Una segunda opinión de alguien que no participa en esa decisión vale bastante. Como mínimo te vas con la lista de preguntas que conviene hacerle a ese proveedor antes de firmar.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Ya tengo un proyecto en marcha y va mal. Puedo preguntar por eso?</h3>
+          <p class="faq-a">Por supuesto. Proyecto detenido, migración complicada, dudas sobre la plataforma que ya elegiste, o un portal que nadie usa. Todas las etapas y todos los tipos de pregunta sirven.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">En qué idioma es la llamada?</h3>
+          <p class="faq-a">En español. También la hacemos en inglés o en francés si prefieres, o si necesitas incluir a alguien de tu casa matriz.</p>
+        </div>
+      </div>
+
+      <div class="anchor-cta">
+        <a href="#hablemos" class="btn btn-primary btn-lg">
+          Marcar mis dudas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credibility -->
+  <section class="section tight">
+    <div class="container">
+      <div class="cred-band">
+        <p class="q">Synolia construye <strong>comercio B2B complejo desde 2004</strong> para fabricantes y
+          distribuidores en América Latina, Estados Unidos y Europa, integrado a sus ERP.</p>
+        <p class="partner">// Integradores de ecommerce B2B · equipo en Santiago de Chile</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <a href="https://www.synolia.com" class="logo" aria-label="Synolia"><img src="assets/synolia_logo.svg" alt="Synolia" /></a>
+      <div class="footer-right">
+        <a href="/comparar-plataformas-b2b/">Comparar plataformas</a> &nbsp;·&nbsp;
+        <a href="#hablemos">Marcar mis dudas</a> &nbsp;·&nbsp;
+        <a href="https://www.synolia.com" target="_blank" rel="noopener">www.synolia.com</a>
+        <div style="margin-top:6px;">© 2026 Synolia. Integradores de ecommerce B2B.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="track.js"></script>
+  <script src="lead.js"></script>
+</body>
+
+</html>
