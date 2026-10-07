@@ -199,15 +199,20 @@
 
   function emailValid(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((v || "").trim()); }
 
-  /* ---------- work email only ----------
-     There is no company field: the email domain is the company. So personal
-     and throwaway mailboxes are refused, including their LatAm variants
-     (hotmail.com.ar, yahoo.com.mx, outlook.es, terra.com.br...).
+  /* ---------- work email, or a personal one plus the company ----------
+     There is no company field up front: a work-email domain already says who
+     they are. Until 7 Oct 2026 personal mailboxes were refused outright, and
+     in the first week of paid traffic that turned away 3 of the 6 visitors
+     who reached step 2 on the two form-first pages (all on mobile, Bolivia
+     and Argentina), for 0 leads.
+     So a personal mailbox is now accepted on one condition: a company name
+     or website, asked in a field that only appears for those addresses.
 
-     A provider name only counts as the mailbox itself: "gmail.com",
-     "gmail.con" or "hotmail.com.ar", never a company subdomain like
-     "live.acme.com" or "mail.acme.cl". This is a UX filter, not security:
-     the API still accepts whatever is posted to it. */
+     Personal includes the LatAm variants (hotmail.com.ar, yahoo.com.mx,
+     outlook.es, terra.com.br...). A provider name only counts as the mailbox
+     itself: "gmail.com", "gmail.con" or "hotmail.com.ar", never a company
+     subdomain like "live.acme.com" or "mail.acme.cl". This is a UX rule, not
+     security: the API still accepts whatever is posted to it. */
   var FREE_PROVIDERS = ("gmail googlemail hotmail outlook live msn windowslive yahoo ymail " +
     "rocketmail icloud aol protonmail proton gmx yandex zohomail fastmail tutanota tuta " +
     "hushmail terra uol bol prodigy latinmail yopmail mailinator guerrillamail sharklasers " +
@@ -225,36 +230,49 @@
     return parts.length === 2 ||
       (parts.length === 3 && ["com", "net", "org", "co"].indexOf(parts[1]) !== -1);
   }
+  function needsCompany() { return emailValid(form.email.value) && isPersonalEmail(form.email.value); }
 
-  var MSG_EMAIL_FORMAT = "Ingresa un correo de trabajo válido.";
-  var MSG_EMAIL_PERSONAL = "Usa el correo de tu empresa. No aceptamos Gmail, Hotmail, Outlook ni otros correos personales.";
+  var MSG_EMAIL_FORMAT = "Ingresa un correo válido.";
+  var companyF = document.getElementById("companyField");
 
-  // Returns true when the email passes, and shows the right message when not.
-  // The rejection is reported on blur as well as on send: the message appears
-  // on blur and pushes the button down, so a click already under way misses
-  // it and the send handler never runs. Once per provider, so blur plus send
-  // count one rejection, not two.
+  // Shows the company field for a personal mailbox and hides it otherwise.
+  // Only once the address is well formed, so it does not flicker while typing.
+  function syncCompany() {
+    if (!companyF || !emailValid(form.email.value)) return;
+    var need = isPersonalEmail(form.email.value);
+    companyF.hidden = !need;
+    if (!need) companyF.classList.remove("invalid");
+  }
+
+  // Once per provider, only the provider and never the address: tells us how
+  // many leads come in on a personal mailbox, and from which.
   var reportedProviders = {};
-  function checkEmail(reportRejection) {
+  function reportPersonal() {
+    if (!needsCompany()) return;
+    var provider = emailDomain(form.email.value);
+    if (reportedProviders[provider]) return;
+    reportedProviders[provider] = true;
+    T.track("personal_email_used", { landing_page: LANDING, variant: VARIANT, provider: provider });
+  }
+
+  function checkEmail() {
     var f = form.querySelector('.field[data-validate="email"]');
     var msg = document.getElementById("emailErr");
-    var v = form.email.value;
-    var bad = null;
-    if (!emailValid(v)) bad = MSG_EMAIL_FORMAT;
-    else if (isPersonalEmail(v)) {
-      bad = MSG_EMAIL_PERSONAL;
-      // Only the provider, never the address: tells us how many leads this
-      // filter turns away, and whether it is worth its cost.
-      var provider = emailDomain(v);
-      if (reportRejection && !reportedProviders[provider]) {
-        reportedProviders[provider] = true;
-        T.track("personal_email_rejected", { landing_page: LANDING, variant: VARIANT, provider: provider });
-      }
-    }
-    if (bad) { msg.textContent = bad; f.classList.add("invalid"); return false; }
+    syncCompany();
+    if (!emailValid(form.email.value)) { msg.textContent = MSG_EMAIL_FORMAT; f.classList.add("invalid"); return false; }
     f.classList.remove("invalid");
     return true;
   }
+  function companyValue() { return companyF && !companyF.hidden ? form.company.value.trim() : ""; }
+  function checkCompany() {
+    if (!needsCompany()) return true;
+    var ok = companyValue().length >= 2;
+    companyF.classList.toggle("invalid", !ok);
+    return ok;
+  }
+  // "andes.cl" or "https://www.andes.cl" reads as a website, "Andes SpA" as a name.
+  function looksLikeSite(v) { return /^(https?:\/\/)?(www\.)?[^\s\/]+\.[a-z]{2,}(\/\S*)?$/i.test(v); }
+
   function setBusy(busy) {
     if (busy) { if (sendBtn.dataset.orig == null) sendBtn.dataset.orig = sendBtn.innerHTML; sendBtn.disabled = true; sendBtn.textContent = MSG_SENDING; }
     else { sendBtn.disabled = false; if (sendBtn.dataset.orig != null) { sendBtn.innerHTML = sendBtn.dataset.orig; delete sendBtn.dataset.orig; } }
@@ -390,13 +408,17 @@
 
   // Say it on leaving the field, not only after they press send.
   form.email.addEventListener("blur", function () {
-    if (form.email.value.trim()) checkEmail(true);
+    if (!form.email.value.trim()) return;
+    checkEmail();
+    reportPersonal();
   });
   form.email.addEventListener("input", function () {
     var f = form.querySelector('.field[data-validate="email"]');
-    if (f.classList.contains("invalid") && emailValid(form.email.value) && !isPersonalEmail(form.email.value)) {
-      f.classList.remove("invalid");
-    }
+    syncCompany();
+    if (f.classList.contains("invalid") && emailValid(form.email.value)) f.classList.remove("invalid");
+  });
+  if (form.company) form.company.addEventListener("input", function () {
+    if (companyF.classList.contains("invalid") && form.company.value.trim().length >= 2) companyF.classList.remove("invalid");
   });
 
   sendBtn.addEventListener("click", function () {
@@ -406,23 +428,40 @@
     var nameF = form.querySelector('.field[data-validate="text"]');
     var ok = true;
     if (!form.fullname.value.trim()) { nameF.classList.add("invalid"); ok = false; } else nameF.classList.remove("invalid");
-    if (!checkEmail(true)) ok = false;
-    if (!ok) { (form.fullname.value.trim() ? form.email : form.fullname).focus(); return; }
+    var emailOk = checkEmail();
+    if (!emailOk) ok = false;
+    reportPersonal();
+    if (emailOk && !checkCompany()) ok = false;
+    if (!ok) {
+      (!form.fullname.value.trim() ? form.fullname : !emailOk ? form.email : form.company).focus();
+      return;
+    }
 
     var email = form.email.value.trim();
     var data = baseData();
     data.fullname = form.fullname.value.trim();
     data.email = email;
-    // No company field on this variant: the work-email domain stands in for it.
+    // A work-email domain stands in for the company. A personal mailbox comes
+    // with the company or its website instead, and that also goes at the head
+    // of `project`: the alert email prints a fixed list of fields and shows
+    // `project` for sure, so the company is never lost on a gmail lead.
     data.email_domain = emailDomain(email);
+    data.email_type = isPersonalEmail(email) ? "personal" : "work";
+    var company = companyValue();
+    if (company) {
+      data.company = company;
+      if (looksLikeSite(company)) data.website = company;
+      data.project = ("Empresa: " + company.replace(/[.\s]+$/, "") + "." + (data.project ? " " + data.project : "")).trim();
+    }
     data.confirm = true;
 
     function done() {
-      T.identify(email, { email_domain: data.email_domain });
+      T.identify(email, { email_domain: data.email_domain, email_type: data.email_type, company: data.company || null });
       // Google Ads conversion: the signal the campaign bids on.
       T.conversion((CFG.analytics && CFG.analytics.googleAds || {}).leadLabel);
       T.track("lead_submitted", {
         intent: "category", landing_page: LANDING, variant: VARIANT, path: "form",
+        email_type: data.email_type, has_company: !!data.company,
         doubts: data.doubts, doubts_csv: data.doubts.join(","),
         doubt_count: data.doubts.length
       });

@@ -322,15 +322,22 @@ campaign ("B2B - Plataformas LATAM (ES)"). `noindex,follow`, canonical to varian
 the sitemap.
 
 - **The platform picker is the hero.** Step 1 is the picker plus "Algo más que debamos
-  saber?", step 2 is name and work email only. The picker is required here (at least
+  saber?", step 2 is name and email. The picker is required here (at least
   one box, "Todavía no lo sé" counts), because the selection is the point of step 1.
-- **Work email only, no company field.** The email domain stands in for the company and
-  is sent as `email_domain`. `lead.js` refuses free and throwaway mailboxes, including
-  LatAm variants (hotmail.com.ar, yahoo.com.mx, terra.com.br), but a provider name only
-  counts as the mailbox itself: `live.acme.com` passes. Client-side only, the API accepts
-  anything. Each refusal fires `personal_email_rejected` with the provider, never the
-  address, so the cost of the filter can be measured. The HubSpot booking path is not
-  filtered.
+- **Work email, or a personal one plus the company.** A work-email domain stands in for
+  the company and is sent as `email_domain`. A free or throwaway mailbox (including LatAm
+  variants such as hotmail.com.ar, yahoo.com.mx, terra.com.br) is accepted only with a
+  company name or website: the "Tu empresa o su sitio web" field (`#companyField`) appears
+  for those addresses only and is then required. A provider name only counts as the
+  mailbox itself: `live.acme.com` is a work address. The value goes out as `company`, also
+  as `website` when it looks like a domain, and is written at the head of `project`
+  ("Empresa: ...") because the alert email shows `project` for sure. `email_type` is
+  `work` or `personal` on the record and on `lead_submitted` (with `has_company`).
+  `personal_email_used` fires once per provider, never with the address. Client-side
+  only, the API accepts anything. The HubSpot booking path is not filtered.
+  Until 7 Oct 2026 personal mailboxes were refused outright (`personal_email_rejected`):
+  in the first week of paid traffic that turned away 3 of the 6 visitors who reached
+  step 2 on the two form-first pages, for 0 leads.
 - **Step 1 is stored even if step 2 never happens.** "Siguiente" calls `POST /save` with
   `step: 1` and no `notify`/`confirm`, so nobody is emailed. Step 2 resends the whole
   record with the same `session_token` plus `notify: true` and `confirm: true`: one visitor,
@@ -350,7 +357,8 @@ Same offer as `/ecommerce-b2b/`, built for paid traffic from "B2B - Ecommerce LA
 Variant A took 289 paid clicks between 7 Sept and 1 Oct 2026 and produced one booking, with
 almost nobody opening the calendar. `noindex,follow`, canonical to variant A, not in the
 sitemap. Same mechanics as `/comparar-plataformas-b2b-b/` (step 1 saved without notifying
-anyone, step 2 is name and work email, HubSpot loaded on demand), with these differences:
+anyone, step 2 is name and email with the same company rule, HubSpot loaded on demand),
+with these differences:
 
 - **The doubt picker is the hero.** Ten checkboxes under "Qué dudas quieres resolver?":
   the six doubts from the bubble section in short form, plus "Qué plataforma elegir",
